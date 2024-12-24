@@ -47,10 +47,7 @@
             <div class="flex items-center">
                 <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2"> EventFlow </a>
 
-
-                <a href="update_profile.jsp" class="flex items-center cursor-pointer">
-                    <img src="image/profile_logo.png" alt="Profile" class="w-10 h-10 rounded-full border-2 border-sky-500 hover:border-sky-700">
-                </a>
+                
             </div>
         </div>
     </div>
@@ -75,36 +72,23 @@
         <!-- Feedback Card -->
         <div class="ease-in transform hover:scale-110 transition duration-100 bg-blue-200 p-6 rounded-lg shadow-md hover:shadow-lg transition">
             <img src="image/feedback.jpg" alt="Feedback" class="w-40 h-32 mx-auto shadow-md mb-4">
-            <h3 class="text-lg font-bold text-gray-800"> Feedback</h3>
-            <p class="text-gray-600"> Give Feedback as  individual and batch </p>
+            <h3 class="text-lg font-bold text-gray-800"> Feedback </h3>
+            <p class="text-gray-600"> Give Feedback & Points </p>
             <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                 View </button>
         </div>
 
-        <!-- Attendance Card -->
+        <!-- Profile Card -->
         <div class="ease-in transform hover:scale-110 transition duration-100 bg-blue-200 p-6 rounded-lg shadow-md hover:shadow-lg transition">
-            <img src="image/attendance0.jpeg" alt="Attendance" class="w-40 h-32 mx-auto shadow-md mb-4">
-            <h3 class="text-lg font-bold text-gray-800">Attendance</h3>
-            <p class="text-gray-600">marks attendance and assign points</p>
+            <img src="image/profile_update.jpeg" alt="Attendance" class="w-40 h-32 mx-auto shadow-md mb-4">
+            <h3 class="text-lg font-bold text-gray-800"> Profile Update </h3>
+            <p class="text-gray-600"> Edit your profile </p>
             <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                 View </button>
         </div>
     </div>
 </div>
 
-
-<!-- API Call Example -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        fetch('https://api.example.com/data') // Replace with your API endpoint
-            .then(response => response.json())
-            .then(data => {
-                console.log('API Response:', data);
-                // You can dynamically update UI here based on API data
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    });
-</script>
 </body>
 </html>
 
