@@ -17,7 +17,8 @@
         <div class="flex justify-between h-16">
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
-
+                <a href="manage_users.jsp" class="text-gray-600 hover:text-white px-3 py-2 px-4 <%=request.getRequestURI().contains("manage_users.jsp") ? "bg-sky-700 text-white rounded" :""%>"> Manage Users</a>
+                <a href="admin_dashboard.jsp" class="text-gray-600 hover:text-white px-3 py-2 px-4 <%=request.getRequestURI().contains("admin_dashboard.jsp") ? "bg-sky-700 text-white rounded" :""%>"> Home</a>
 
             </div>
 
