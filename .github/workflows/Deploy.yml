@@ -1,0 +1,46 @@
+name: Deploy JSP Frontend to AWS EC2
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow when changes are pushed to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Save EC2 private key to file
+      - name: Save Private Key
+        run: |
+          echo "${{ secrets.AWS_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
+      # Step 3: Add EC2 host to known hosts
+      - name: Add EC2 Host to Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+      # Step 4: Build the JSP application (if using Maven)
+      - name: Build Project
+        run: |
+          ./mvnw clean package -DskipTests  # Adjust if you're not using Maven
+
+      # Step 5: Deploy JSP files to Tomcat
+      - name: Deploy to Tomcat
+        env:
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+        run: |
+          # Copy the WAR file to the Tomcat webapps directory
+          scp -o StrictHostKeyChecking=no -i private_key.pem ./target/*.war $USER@$HOST:/opt/tomcat10/webapps/
+
+          # Restart Tomcat to load the new deployment
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
+            sudo systemctl restart tomcat10
+          EOF
