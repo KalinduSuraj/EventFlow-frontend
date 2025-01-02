@@ -10,40 +10,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
+      # Step 1: Set up JDK 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      # Step 2: Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Save EC2 private key to file
+      # Step 3: Save EC2 private key to file
       - name: Save Private Key
         run: |
           echo "${{ secrets.AWS_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
-      # Step 3: Add EC2 host to known hosts
+      # Step 4: Add EC2 host to known hosts
       - name: Add EC2 Host to Known Hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      # Step 4: Set execute permissions for Maven Wrapper
+      # Step 5: Set execute permissions for Maven Wrapper
       - name: Set Permissions for mvnw
         run: chmod +x ./mvnw
 
-      # Step 5: Build the JSP application
+      # Step 6: Build the JSP application
       - name: Build Project
         run: ./mvnw clean package -DskipTests
 
-      # Step 6: Deploy JSP files to Tomcat
+      # Step 7: Deploy JSP files to Tomcat
       - name: Deploy to Tomcat
         env:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
         run: |
-          # Copy the WAR file to the Tomcat webapps directory
           scp -o StrictHostKeyChecking=no -i private_key.pem ./target/*.war $USER@$HOST:/opt/tomcat10/webapps/
-          
-          # Restart Tomcat to load the new deployment
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
             sudo systemctl restart tomcat10
           EOF
