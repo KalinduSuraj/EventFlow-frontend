@@ -50,15 +50,17 @@ jobs:
         run: ssh -i private_key.pem $USER@$HOST echo "SSH connection successful"
 
 
-      # Deploy to AWS EC2
+      # Deploy to AWS EC2 
       - name: Deploy to AWS EC2
         env:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
         run: |
-          scp -o StrictHostKeyChecking=no -i private_key.pem target/*.jar $USER@$HOST:/home/$USER/eventFlowBackend.jar
+          # Copy the WAR file to the Tomcat webapps directory
+          scp -o StrictHostKeyChecking=no -i private_key.pem ./target/*.war $USER@$HOST:/opt/tomcat10/webapps/
+      
+          # Restart Tomcat to load the new deployment
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
-            pkill -f eventFlowBackend.jar || true
-            nohup java -jar /home/$USER/eventFlowBackend.jar > /home/$USER/eventFlowBackend.log 2>&1 &
+            sudo systemctl restart tomcat10
           EOF
 
