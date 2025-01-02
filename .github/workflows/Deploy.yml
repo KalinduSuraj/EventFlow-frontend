@@ -61,6 +61,6 @@ jobs:
       
           # Restart Tomcat to load the new deployment
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
-            sudo systemctl restart tomcat10
+            sudo systemctl restart tomcat
           EOF
 
