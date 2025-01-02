@@ -47,7 +47,14 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
         run: |
+          # Ensure the destination directory exists
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST "sudo mkdir -p /opt/tomcat10/webapps/ && sudo chown -R $USER:$USER /opt/tomcat10/webapps/"
+          
+          # Copy the WAR file to the Tomcat webapps directory
           scp -o StrictHostKeyChecking=no -i private_key.pem ./target/*.war $USER@$HOST:/opt/tomcat10/webapps/
+          
+          # Restart Tomcat to load the new deployment
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
             sudo systemctl restart tomcat10
           EOF
+
