@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       # Step 1: Checkout the repository
@@ -26,12 +26,15 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      # Step 4: Build the JSP application (if using Maven)
-      - name: Build Project
-        run: |
-          ./mvnw clean package -DskipTests  # Adjust if you're not using Maven
+      # Step 4: Set execute permissions for Maven Wrapper
+      - name: Set Permissions for mvnw
+        run: chmod +x ./mvnw
 
-      # Step 5: Deploy JSP files to Tomcat
+      # Step 5: Build the JSP application
+      - name: Build Project
+        run: ./mvnw clean package -DskipTests
+
+      # Step 6: Deploy JSP files to Tomcat
       - name: Deploy to Tomcat
         env:
           HOST: ${{ secrets.HOST }}
@@ -39,7 +42,7 @@ jobs:
         run: |
           # Copy the WAR file to the Tomcat webapps directory
           scp -o StrictHostKeyChecking=no -i private_key.pem ./target/*.war $USER@$HOST:/opt/tomcat10/webapps/
-
+          
           # Restart Tomcat to load the new deployment
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
             sudo systemctl restart tomcat10
