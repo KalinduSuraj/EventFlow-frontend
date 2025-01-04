@@ -25,6 +25,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jsp-api</artifactId>
+            <version>9.0.62</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
@@ -35,6 +41,11 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
         </dependency>
     </dependencies>
 
