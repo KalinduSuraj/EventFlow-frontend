@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="org.json.JSONArray, org.json.JSONObject" %>
+<%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +52,9 @@
         <h1 class="text-3xl font-semibold text-gray-800 text-center">Workshop List</h1>
     </div>
     <div class="text-left mb-4 py-5">
-        <a href="create_workshop.jsp" class="bg-red-500 text-white px-6 py-3 rounded shadow hover:bg-red-700">Create Workshop</a>
+        <button class="bg-red-600 text-white font-bold py-2 px-4 rounded hover:bg-red-800"
+                onclick="window.location.href='create_workshop.jsp'">Create Workshop
+        </button>
     </div>
     <table class="min-w-full table-auto bg-white border-collapse shadow-lg rounded-lg pb-3">
         <thead class="bg-blue-200 text-gray-700">
@@ -64,47 +67,24 @@
         </thead>
         <tbody>
         <%
-            String apiUrl = "http://virtserver.swaggerhub.com/ANUSHIDESILVA28/EAD2/1.0.0";
-            String jsonResponse = "";
-
             try {
-                // Fetch the API response
-                java.net.URL url = new java.net.URL(apiUrl);
-                java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept", "application/json");
-
-                if (conn.getResponseCode() == 200) {
-                    java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line);
-                    }
-                    br.close();
-                    jsonResponse = sb.toString();
-                } else {
-                    throw new RuntimeException("HTTP error code: " + conn.getResponseCode());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            // Parse JSON and render the table
-            try {
-                if (!jsonResponse.trim().isEmpty() && jsonResponse.startsWith("[")) {
-                    JSONArray events = new JSONArray(jsonResponse);
-                    for (int i = 0; i < events.length(); i++) {
-                        JSONObject event = events.getJSONObject(i);
+                List<JSONObject> workshops = (List<JSONObject>) request.getAttribute("workshops");
+                if (workshops != null && !workshops.isEmpty()) {
+                    for (JSONObject workshop : workshops) {
         %>
         <tr class="bg-white hover:bg-gray-50">
-            <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= event.optString("title", "N/A") %></td>
-            <td class="px-6 py-4 text-sm text-gray-600"><%= event.optString("description", "N/A") %></td>
-            <td class="px-6 py-4 text-sm text-gray-600"><%= event.optString("scheduled_datetime", "N/A") %></td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= workshop.optString("title", "N/A") %></td>
+            <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.optString("description", "N/A") %></td>
+            <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.optString("scheduled_datetime", "N/A") %></td>
             <td class="px-6 py-4 text-sm">
                 <div class="flex space-x-4">
-                    <a href="update_workshop.jsp?eID=<%= event.optInt("eID", 0) %>" class="text-green-600 hover:text-green-800 font-medium">Update</a>
-                    <a href="deactivate_workshop.jsp?eID=<%= event.optInt("eID", 0) %>" class="text-red-600 hover:text-red-800 font-medium">Deactivate</a>
+
+
+                        <button class="text-green-600 hover:text-green-800 font-medium"
+                                onclick="window.location.href='updateUser?id=<%= workshop.optInt("createdBy") %>'">Edit</button>
+                        <button class="text-red-600 hover:text-red-800 font-medium"
+                                onclick="window.location.href='deleteWorkshop?id=<%= workshop.optInt("createdBy") %>'">Delete</button>
+
                 </div>
             </td>
         </tr>
