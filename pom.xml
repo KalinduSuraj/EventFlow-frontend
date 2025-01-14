@@ -60,7 +60,7 @@
     </dependencies>
 
     <build>
-        <finalName>EventFlow</finalName> <!-- This ensures the WAR is named MyAdminApp.war -->
+        <finalName>EventsFlow</finalName> <!-- This ensures the WAR is named EventsFlow.war -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
