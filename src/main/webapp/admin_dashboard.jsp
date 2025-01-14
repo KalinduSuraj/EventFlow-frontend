@@ -17,14 +17,16 @@
         <div class="flex justify-between h-16">
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
-                <a href="index" class="text-gray-600 hover:text-blue-400 px-3 py-2">Home</a>
-                <a href="about" class="text-gray-600 hover:text-blue-400 px-3 py-2">About</a>
-                <a href="contact" class="text-gray-600 hover:text-blue-400 px-3 py-2">Contact</a>
+                <a href="admin_dashboard.jsp" class="text-gray-600 hover:text-white px-3 py-2 px-4 <%=request.getRequestURI().contains("admin_dashboard.jsp") ? "bg-sky-700 text-white rounded" :""%>"> Home</a>
+
             </div>
 
             <!-- Right Nav -->
             <div class="flex items-center">
                 <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2">EventFlow</a>
+                <a href="update_profile.jsp" class="flex items-center cursor-pointer">
+                    <img src="image/profile1.jpg" alt="Profile" class="w-10 h-10 rounded-full border-2 border-sky-500 hover:border-sky-500 hover:border-sky-700">
+                </a>
             </div>
         </div>
     </div>
@@ -41,9 +43,11 @@
             <img src="image/users.jpg" alt="user image" class="w-40 h-32 mx-auto shadow-md mb-4">
             <h3 class="text-lg font-bold text-gray-800">Manage Users</h3>
             <p class="text-gray-600">Manage user Information</p>
+            <a href="manage_users.jsp">
             <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                 View
             </button>
+            </a>
         </div>
 
         <!-- Batches Card -->
@@ -51,19 +55,23 @@
             <img src="image/batches.jpg" alt="batch image" class="w-40 h-32 mx-auto shadow-md mb-4">
             <h3 class="text-lg font-bold text-gray-800">Create Batches</h3>
             <p class="text-gray-600">Create batches, Assign students & Assign teachers</p>
+            <a href="create_batches.jsp">
             <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                 View
             </button>
+            </a>
         </div>
 
-        <!-- My Personal Info Card -->
+        <!-- Attendance Card -->
         <div class="ease-in transform hover:scale-110 transition duration-100 bg-blue-200 p-6 rounded-lg shadow-md hover:shadow-lg transition">
-            <img src="image/profile1.jpg" alt="Personal Info" class="w-40 h-32 mx-auto shadow-md mb-4">
-            <h3 class="text-lg font-bold text-gray-800">Profile Update</h3>
-            <p class="text-gray-600">Update your personal information</p>
+            <img src="image/attendance.jpg" alt="Attendance" class="w-40 h-32 mx-auto shadow-md mb-4">
+            <h3 class="text-lg font-bold text-gray-800">Attendance</h3>
+            <p class="text-gray-600">Marks attendance for participated events</p>
+            <a href="attendance.jsp">
             <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                 View
             </button>
+            </a>
         </div>
     </div>
 </div>
