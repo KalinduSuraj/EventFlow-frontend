@@ -7,40 +7,70 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
-      # Step 1: Checkout the repository
+      # Step 1: Set up JDK 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      # Step 2: Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Save EC2 private key to file
+      # Step 3: Save EC2 private key to file
       - name: Save Private Key
         run: |
           echo "${{ secrets.AWS_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
-      # Step 3: Add EC2 host to known hosts
+      # Step 4: Add EC2 host to known hosts
       - name: Add EC2 Host to Known Hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      # Step 4: Build the JSP application (if using Maven)
-      - name: Build Project
-        run: |
-          ./mvnw clean package -DskipTests  # Adjust if you're not using Maven
+      # Step 5: Set execute permissions for Maven Wrapper
+      - name: Set Permissions for mvnw
+        run: chmod +x ./mvnw
 
-      # Step 5: Deploy JSP files to Tomcat
-      - name: Deploy to Tomcat
+      # Step 6: Build the JSP application
+      - name: Build Project
+        run: ./mvnw clean package -DskipTests
+
+      # Step 7: Deploy JSP files to Tomcat
+      # Debug SSH Connection
+      - name: Debug SSH Connection
+        env:
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+        run: ssh -i private_key.pem $USER@$HOST echo "SSH connection successful"
+
+
+      # Step 8: Delete all existing WAR files in Tomcat webapps directory
+      - name: Delete Existing WAR Files
+        env:
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
+            echo "Deleting all existing WAR files in the webapps directory"
+            sudo rm -rf /opt/tomcat10/webapps/*.war
+          EOF
+
+      # Step 9: Deploy to AWS EC2
+      - name: Deploy to AWS EC2
         env:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
         run: |
           # Copy the WAR file to the Tomcat webapps directory
-          scp -o StrictHostKeyChecking=no -i private_key.pem ./target/*.war $USER@$HOST:/opt/tomcat10/webapps/
-
+          scp -o StrictHostKeyChecking=no -i private_key.pem ./target/MyAdminApp.war $USER@$HOST:/opt/tomcat/webapps/
+          
           # Restart Tomcat to load the new deployment
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
-            sudo systemctl restart tomcat10
+            sudo systemctl restart tomcat
           EOF
