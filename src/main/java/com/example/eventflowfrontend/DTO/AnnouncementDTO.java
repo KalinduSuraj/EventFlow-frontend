@@ -11,4 +11,8 @@ public class AnnouncementDTO {
     private Long createdBy;
     private ArrayList<Integer> batches;
     private ArrayList<Integer> students;
+
+    public String getAID() {
+        return aID.toString();
+    }
 }
