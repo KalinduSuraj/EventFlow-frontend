@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EventService {
 
-    private static final String BASE_URL = "http://be.eventsflow.online:8081/api/event"; // Replace with your API base URL
+    private static final String BASE_URL = "http://be.eventsflow.online:8081/api/event/interview"; // Replace with your API base URL
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
