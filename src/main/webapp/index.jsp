@@ -60,6 +60,7 @@
         <a href="Login.jsp" class="btn btn-custom">Login</a>
         <a href="teacher_dashboard.jsp" class="btn btn-custom">Teacher Dashboard</a>
         <a href="admin_dashboard.jsp" class="btn btn-custom">Admin Dashboard</a>
+<%--        <a href="admin_dashboard.jsp" class="btn btn-custom">Admin Dashboard</a>--%>
     </div>
 </div>
 <footer>
