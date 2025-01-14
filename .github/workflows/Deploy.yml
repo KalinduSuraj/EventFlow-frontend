@@ -67,10 +67,17 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
         run: |
-          # Copy the WAR file to the Tomcat webapps directory
-          scp -o StrictHostKeyChecking=no -i private_key.pem ./target/EventsFlow.war $USER@$HOST:/opt/tomcat/webapps/
-      
-          # Restart Tomcat to load the new deployment
+          # Copy the WAR file to a temporary directory (where the user has write access)
+          scp -o StrictHostKeyChecking=no -i private_key.pem ./target/EventsFlow.war $USER@$HOST:/home/$USER/
+
+          # SSH into the EC2 instance and move the WAR file to Tomcat's webapps directory
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
+            # Move the WAR file to the Tomcat webapps directory
+            sudo mv /home/$USER/EventsFlow.war /opt/tomcat/webapps/
+
+            # Change the ownership to tomcat user (if necessary)
+            sudo chown tomcat:tomcat /opt/tomcat/webapps/EventsFlow.war
+
+            # Restart Tomcat to load the new deployment
             sudo systemctl restart tomcat
           EOF
