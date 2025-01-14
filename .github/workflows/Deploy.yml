@@ -31,6 +31,7 @@ jobs:
       - name: Add EC2 Host to Known Hosts
         run: |
           mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       # Step 5: Set execute permissions for Maven Wrapper
