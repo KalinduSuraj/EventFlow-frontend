@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: gavee liyanage
-  Date: 13-Jan-25
-  Time: 2:50 PM
+  Date: 1/14/2025
+  Time: 2:57 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -18,7 +18,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Create New Interview</title>
+    <title>Create New Announcement</title>
 </head>
 <body class="bg-white flex items-center justify-center min-h-screen">
 
@@ -54,26 +54,31 @@
 </nav>
 
 <!-- Form Box -->
-<div class="bg-blue-200 shadow-lg rounded-lg p-8 max-w-md w-full mt-16">
-    <h2 class="text-2xl font-bold text-center mb-4 py-3">Create New Interview</h2>
+<div class="bg-blue-200 shadow-lg rounded-lg p-4 max-w-md w-full mt-16">
+    <h2 class="text-2xl font-bold text-center mb-4 py-3">Create New Announcement</h2>
 
     <!-- Response Message -->
     <div id="responseMessage" class="text-center text-sm mb-4"></div>
 
-    <form id="interviewForm" action="/interview" method="post" class="space-y-3">
+    <form id="announcementForm" action="#" method="post" class="space-y-3">
         <div>
-            <label for="title" class="block text-sm font-medium text-gray-700 py-2">Interview Title</label>
-            <input type="text" id="title" name="title" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" placeholder="Interview for Web Developer" required>
+            <label for="subject" class="block text-sm font-medium text-gray-700 py-2">Subject</label>
+            <input type="text" id="subject" name="subject" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" placeholder="Announcement Subject" required>
         </div>
 
         <div>
-            <label for="description" class="block text-sm font-medium text-gray-700 py-2">Description</label>
-            <textarea id="description" name="description" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" placeholder="Conducting interviews for the Web Developer role." required></textarea>
+            <label for="message" class="block text-sm font-medium text-gray-700 py-2">Message</label>
+            <textarea id="message" name="message" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" placeholder="Message content" required></textarea>
         </div>
 
         <div>
-            <label for="startDateTime" class="block text-sm font-medium text-gray-700 py-2">Start Date & Time</label>
-            <input type="datetime-local" id="startDateTime" name="startDateTime" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" required>
+            <label for="students" class="block text-sm font-medium text-gray-700 py-2">Students (IDs)</label>
+            <input type="text" id="students" name="students" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" placeholder="Comma-separated student IDs" required>
+        </div>
+
+        <div>
+            <label for="batches" class="block text-sm font-medium text-gray-700 py-2">Batches (IDs)</label>
+            <input type="text" id="batches" name="batches" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" placeholder="Comma-separated batch IDs" required>
         </div>
 
         <input type="hidden" name="createdBy" value="<%= request.getParameter("createdBy") %>"/>
@@ -81,11 +86,11 @@
         <!-- Buttons Section -->
         <div class="space-y-10">
             <div class="flex space-x-4">
-                <button type="submit" class="w-1/2 bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <button type="submit" id="saveButton" class="w-1/2 bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     Save
                 </button>
 
-                <a href="teacher_interview.jsp"
+                <a href="teacher_announcement.jsp"
                    class="w-1/2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-center">
                     Cancel
                 </a>
@@ -95,16 +100,26 @@
 </div>
 
 <script>
-    document.getElementById('interviewForm').addEventListener('submit', async (event) => {
+    document.getElementById('saveButton').addEventListener('click', async (event) => {
         // Prevent default form submission
         event.preventDefault();
 
-        const form = document.getElementById('interviewForm');
+        const form = document.getElementById('announcementForm');
         const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+
+        const students = formData.get('students').split(',').map(id => parseInt(id.trim()));
+        const batches = formData.get('batches').split(',').map(id => parseInt(id.trim()));
+
+        const data = {
+            subject: formData.get('subject'),
+            message: formData.get('message'),
+            createdBy: formData.get('createdBy'),
+            students: students,
+            batches: batches,
+        };
 
         try {
-            const response = await fetch('/interview', {
+            const response = await fetch('/announcements', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
@@ -128,8 +143,6 @@
     });
 </script>
 
-
 </body>
 </html>
-
 
