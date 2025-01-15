@@ -54,7 +54,7 @@
         <%
             try {
                 String apiResponse = (String) request.getAttribute("apiResponse");
-                if (apiResponse != null && !apiResponse.isEmpty()) {
+                if (apiResponse != null && !apiResponse.trim().isEmpty()) {
                     JSONArray interviews = new JSONArray(apiResponse);
                     if (interviews.length() > 0) {
                         for (int i = 0; i < interviews.length(); i++) {
@@ -81,7 +81,13 @@
             <td colspan="4" class="px-6 py-4 text-center text-gray-600">No interviews available</td>
         </tr>
         <%
-                }
+            }
+        } else {
+        %>
+        <tr>
+            <td colspan="4" class="px-6 py-4 text-center text-gray-600">No interviews available</td>
+        </tr>
+        <%
             }
         } catch (Exception e) {
             e.printStackTrace();
