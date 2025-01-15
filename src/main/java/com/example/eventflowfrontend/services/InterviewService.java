@@ -4,7 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
 import java.net.*;
-import org.json.*;
+//import org.json.*;
 
 public class InterviewService extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

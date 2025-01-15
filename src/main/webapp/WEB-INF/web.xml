@@ -11,6 +11,8 @@
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/displayStudent</url-pattern>
+        <url-pattern>/displayLecturer</url-pattern>
+        <url-pattern>/displayAdmin</url-pattern>
         <url-pattern>/updateUser</url-pattern>
         <url-pattern>/addUser</url-pattern>
         <url-pattern>/deleteUser</url-pattern>

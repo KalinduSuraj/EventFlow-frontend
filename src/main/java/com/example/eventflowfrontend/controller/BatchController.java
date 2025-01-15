@@ -82,7 +82,7 @@ public class BatchController extends HttpServlet {
         if (action.equals("assignUser")) {
             Long batchId = Long.parseLong(request.getParameter("bID"));
             AttendanceDTO attendanceDTO = new AttendanceDTO();
-            attendanceDTO.setUserID(Integer.parseInt(request.getParameter("userID")));
+            //attendanceDTO.setUserID(Integer.parseInt(request.getParameter("userID")));
 
             try {
                 batchService.assignUser(batchId, attendanceDTO);

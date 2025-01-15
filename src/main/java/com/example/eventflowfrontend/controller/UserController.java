@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name ="UserController" , urlPatterns = {"/displayStudent","/updateUser","/deleteUser","/addUser"})
+@WebServlet(name ="UserController" , urlPatterns = {"displayAdmin","/displayLecturer","/displayStudent","/updateUser","/deleteUser","/addUser"})
 public class UserController extends HttpServlet {
 
     private final UserService userService = new UserService();
@@ -24,6 +24,20 @@ public class UserController extends HttpServlet {
             request.setAttribute("users",userDTOS);
             request.getRequestDispatcher("user/displayStudent.jsp").forward(request,response);
         }
+
+        if (request.getServletPath().equals("/displayLecturer")) {
+            List<UserDTO> userDTOS = userService.getAllUsers("lecturers");
+            request.setAttribute("users",userDTOS);
+            request.getRequestDispatcher("user/displayLecturer.jsp").forward(request,response);
+        }
+
+        if (request.getServletPath().equals("/displayAdmin")) {
+            List<UserDTO> userDTOS = userService.getAllUsers("admins");
+            request.setAttribute("users",userDTOS);
+            request.getRequestDispatcher("user/displayAdmin.jsp").forward(request,response);
+        }
+
+
 
         if (request.getServletPath().equals("/updateUser")) {
             int uid = Integer.parseInt(request.getParameter("uid"));

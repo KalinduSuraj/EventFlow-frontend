@@ -11,6 +11,10 @@
 
 </head>
 <body>
-<a href="displayStudent">displayStudent</a>
+<a href="displayStudent">displayStudent</a><br>
+<a href="displayLecturer">displayLecturer</a><br>
+<a href="displayAdmin">displayAdmin</a>
+
+
 </body>
 </html>
