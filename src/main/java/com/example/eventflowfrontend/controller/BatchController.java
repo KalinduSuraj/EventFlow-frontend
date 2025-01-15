@@ -1,5 +1,6 @@
-package com.example.eventflowfrontend.controller.;
+package com.example.eventflowfrontend.controller;
 
+import com.example.eventflowfrontend.DTO.AttendanceDTO;
 import com.example.eventflowfrontend.DTO.BatchDTO;
 import com.example.eventflowfrontend.DTO.EventDTO;
 import com.example.eventflowfrontend.services.BatchService;
