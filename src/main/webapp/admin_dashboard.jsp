@@ -55,7 +55,7 @@
             <img src="image/batches.jpg" alt="batch image" class="w-40 h-32 mx-auto shadow-md mb-4">
             <h3 class="text-lg font-bold text-gray-800">Create Batches</h3>
             <p class="text-gray-600">Create batches, Assign students & Assign teachers</p>
-            <a href="create_batches.jsp">
+            <a href="displayBatch.jsp">
             <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                 View
             </button>
