@@ -1,13 +1,5 @@
-<%@ page import="org.json.JSONObject" %>
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: gavee liyanage
-  Date: 13-Jan-25
-  Time: 2:50 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="org.json.JSONArray, org.json.JSONObject" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
@@ -27,29 +19,14 @@
         <div class="flex justify-between h-16">
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
-
-                <a href="teacher_dashboard.jsp"
-                   class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
-                    Workshop
-                </a>
-
-                <a href="teacher_interview.jsp"
-                   class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
-                    Interview
-                </a>
-
-                <a href="teacher_announcement.jsp"
-                   class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
-                    Announcement
-                </a>
+                <a href="teacher_dashboard.jsp" class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4 <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">Workshop</a>
+                <a href="teacher_interview.jsp" class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4 <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">Interview</a>
+                <a href="teacher_announcement.jsp" class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4 <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">Announcement</a>
             </div>
 
             <!-- Right Nav -->
             <div class="flex items-center">
-                <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2"> EventFlow </a>
+                <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2">EventFlow</a>
             </div>
         </div>
     </div>
@@ -77,7 +54,7 @@
         <%
             try {
                 String apiResponse = (String) request.getAttribute("apiResponse");
-                if (apiResponse != null && !apiResponse.isEmpty()) {
+                if (apiResponse != null && !apiResponse.trim().isEmpty()) {
                     JSONArray interviews = new JSONArray(apiResponse);
                     if (interviews.length() > 0) {
                         for (int i = 0; i < interviews.length(); i++) {
@@ -104,7 +81,13 @@
             <td colspan="4" class="px-6 py-4 text-center text-gray-600">No interviews available</td>
         </tr>
         <%
-                }
+            }
+        } else {
+        %>
+        <tr>
+            <td colspan="4" class="px-6 py-4 text-center text-gray-600">No interviews available</td>
+        </tr>
+        <%
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,5 +101,6 @@
         </tbody>
     </table>
 </div>
+
 </body>
 </html>
