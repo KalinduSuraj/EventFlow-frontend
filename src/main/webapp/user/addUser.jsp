@@ -1,63 +1,96 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: HP
-  Date: 1/5/2025
-  Time: 12:15 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add User</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>Add User</h1>
-<% String message = (String) request.getAttribute("message"); %>
-<% if (message != null) { %>
-<p style="color: green;"><%= message %></p>
-<% } %>
-<form action="addUser" method="post">
-    <%
-        String createdBy = request.getParameter("createdBy");
-    %>
-    <input type="hidden" name="action" value="add"/>
-    <input type="hidden" name="createdBy" value="<%=createdBy%>"/>
-    <table>
-        <tr>
-            <td>Name:</td>
-            <td><input type="text" name="name"/></td>
-        </tr>
-        <tr>
-            <td>Mobile:</td>
-            <td><input type="text" name="mobile"/></td>
-        </tr>
-        <tr>
-            <td>NIC:</td>
-            <td><input type="text" name="nic"/></td>
-        </tr>
-        <tr>
-            <td>email:</td>
-            <td><input type="email" name="email"/></td>
-        </tr>
-        <tr>
-            <td>password:</td>
-            <td><input type="password" name="password"/></td>
-        </tr>
-        <tr>
-            <td>Role:</td>
-            <td>
-                <select name="role">
-                    <option value="admin">Admin</option>
-                    <option value="lecturer">lecturer</option>
-                    <option value="student">Student</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Add-User"/></td>
-        </tr>
-    </table>
-</form>
+<body class="bg-gray-100 text-gray-900">
+
+<!-- Navbar -->
+<nav class="bg-blue-600 p-4 text-white shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-lg font-bold">User Management System</h1>
+        <div>
+            <a href="/home" class="px-4 py-2 hover:bg-blue-500 rounded">Home</a>
+            <a href="/logout" class="px-4 py-2 hover:bg-blue-500 rounded">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mx-auto my-10 max-w-lg bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-center text-blue-600">Add New User</h1>
+
+    <% String message = (String) request.getAttribute("message"); %>
+    <% if (message != null) { %>
+    <p class="text-green-600 text-center mb-4"><%= message %></p>
+    <% } %>
+
+    <form action="addUser" method="post" class="space-y-4">
+        <%
+            String createdBy = request.getParameter("createdBy");
+        %>
+        <input type="hidden" name="action" value="add"/>
+        <input type="hidden" name="createdBy" value="<%=createdBy%>"/>
+
+        <!-- Name Field -->
+        <label class="block">
+            <span class="text-gray-700">Name:</span>
+            <input type="text" name="name" required
+                   class="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
+        </label>
+
+        <!-- Mobile Field -->
+        <label class="block">
+            <span class="text-gray-700">Mobile:</span>
+            <input type="text" name="mobile" required
+                   class="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
+        </label>
+
+        <!-- NIC Field -->
+        <label class="block">
+            <span class="text-gray-700">NIC:</span>
+            <input type="text" name="nic" required
+                   class="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
+        </label>
+
+        <!-- Email Field -->
+        <label class="block">
+            <span class="text-gray-700">Email:</span>
+            <input type="email" name="email" required
+                   class="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
+        </label>
+
+        <!-- Password Field -->
+        <label class="block">
+            <span class="text-gray-700">Password:</span>
+            <input type="password" name="password" required
+                   class="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
+        </label>
+
+        <!-- Role Dropdown -->
+        <label class="block">
+            <span class="text-gray-700">Role:</span>
+            <select name="role" required
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="admin">Admin</option>
+                <option value="lecturer">Lecturer</option>
+                <option value="student">Student</option>
+            </select>
+        </label>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center mt-6">
+            <button type="submit"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                Add User
+            </button>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>
