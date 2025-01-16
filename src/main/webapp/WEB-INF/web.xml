@@ -13,11 +13,23 @@
         <url-pattern>/display_workshop</url-pattern>
         <url-pattern>/updateEvent</url-pattern>
         <url-pattern>/addWorkshop</url-pattern>
+    </servlet-mapping>
+     <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>com.example.eventflowfrontend.controller.UserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/displayStudent</url-pattern>
+        <url-pattern>/displayLecturer</url-pattern>
+        <url-pattern>/displayAdmin</url-pattern>
+        <url-pattern>/updateUser</url-pattern>
+        <url-pattern>/addUser</url-pattern>
         <url-pattern>/deleteUser</url-pattern>
     </servlet-mapping>
 
         <welcome-file-list>
-            <welcome-file>index.jsp</welcome-file>
+            <welcome-file>test.jsp</welcome-file>
         </welcome-file-list>
 
 
