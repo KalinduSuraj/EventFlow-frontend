@@ -93,7 +93,7 @@
                     Update
                 </button>
 
-                <a href="manage_workshop.jsp"
+                <a href="event/manage_workshop.jsp"
                    class="w-1/2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-center">
                     Cancel
                 </a>
