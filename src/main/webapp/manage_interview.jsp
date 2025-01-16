@@ -1,6 +1,7 @@
 <%@ page import="org.json.JSONArray, org.json.JSONObject" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
+<%@ page import="com.example.eventflowfrontend.DTO.EventDTO" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +39,7 @@
     </div>
     <div class="text-left mb-4 py-5">
         <button class="bg-red-600 text-white font-bold py-2 px-4 rounded hover:bg-red-800"
-                onclick="window.location.href='create_interview.jsp'">Create Interview
+                onclick="window.location.href='addWorkshop?createdBy=10'">Create Interview
         </button>
     </div>
     <table class="min-w-full table-auto bg-white border-collapse shadow-lg rounded-lg pb-3">
@@ -53,23 +54,20 @@
         <tbody>
         <%
             try {
-                String apiResponse = (String) request.getAttribute("apiResponse");
-                if (apiResponse != null && !apiResponse.isEmpty()) {
-                    JSONArray interviews = new JSONArray(apiResponse);
-                    if (interviews.length() > 0) {
-                        for (int i = 0; i < interviews.length(); i++) {
-                            JSONObject interview = interviews.getJSONObject(i);
+                List<EventDTO> interviews = (List<EventDTO>) request.getAttribute("interviews");
+                if (interviews != null && !interviews.isEmpty()) {
+                        for (EventDTO interview:interviews) {
         %>
         <tr class="bg-white hover:bg-gray-50">
-            <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= interview.optString("title", "N/A") %></td>
-            <td class="px-6 py-4 text-sm text-gray-600"><%= interview.optString("description", "N/A") %></td>
-            <td class="px-6 py-4 text-sm text-gray-600"><%= interview.optString("startDateTime", "N/A") %></td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= interview.getTitle() %></td>
+            <td class="px-6 py-4 text-sm text-gray-600"><%= interview.getDescription() %></td>
+            <td class="px-6 py-4 text-sm text-gray-600"><%= interview.getStartDateTime() %></td>
             <td class="px-6 py-4 text-sm">
                 <div class="flex space-x-4">
                     <button class="text-green-600 hover:text-green-800 font-medium"
-                            onclick="window.location.href='updateInterview?id=<%= interview.optInt("createdBy") %>'">Edit</button>
+                            onclick="window.location.href='updateInterview?id=<%= interview.getEID() %>'">Edit</button>
                     <button class="text-red-600 hover:text-red-800 font-medium"
-                            onclick="window.location.href='deleteInterview?id=<%= interview.optInt("createdBy") %>'">Delete</button>
+                            onclick="window.location.href='deleteInterview?id=<%= interview.getAID() %>'">Delete</button>
                 </div>
             </td>
         </tr>
@@ -82,7 +80,6 @@
         </tr>
         <%
                 }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         %>
