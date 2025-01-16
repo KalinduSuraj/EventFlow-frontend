@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="org.json.JSONArray, org.json.JSONObject" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.example.eventflowfrontend.DTO.EventDTO" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,19 +21,19 @@
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
 
-                <a href="teacher_dashboard.jsp"
+                <a href="../teacher_dashboard.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
                           <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Workshop
                 </a>
 
-                <a href="teacher_interview.jsp"
+                <a href="../teacher_interview.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
                           <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview
                 </a>
 
-                <a href="teacher_announcement.jsp"
+                <a href="../teacher_announcement.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
                           <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Announcement
@@ -53,7 +54,7 @@
     </div>
     <div class="text-left mb-4 py-5">
         <button class="bg-red-600 text-white font-bold py-2 px-4 rounded hover:bg-red-800"
-                onclick="window.location.href='create_workshop.jsp'">Create Workshop
+                onclick="window.location.href='addWorkshop?createdBy=7'">Create Workshop
         </button>
     </div>
     <table class="min-w-full table-auto bg-white border-collapse shadow-lg rounded-lg pb-3">
@@ -62,28 +63,30 @@
             <th class="px-6 py-4 text-left">Title</th>
             <th class="px-6 py-4 text-left">Description</th>
             <th class="px-6 py-4 text-left">Scheduled Date</th>
+            <th class="px-6 py-4 text-left">Annuncement</th>
             <th class="px-6 py-4 text-left">Actions</th>
         </tr>
         </thead>
         <tbody>
         <%
             try {
-                List<JSONObject> workshops = (List<JSONObject>) request.getAttribute("workshops");
+                List<EventDTO> workshops = (List<EventDTO>) request.getAttribute("workshops");
                 if (workshops != null && !workshops.isEmpty()) {
-                    for (JSONObject workshop : workshops) {
+                    for (EventDTO workshop : workshops) {
         %>
         <tr class="bg-white hover:bg-gray-50">
-            <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= workshop.optString("title", "N/A") %></td>
-            <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.optString("description", "N/A") %></td>
-            <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.optString("scheduled_datetime", "N/A") %></td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= workshop.getTitle() %></td>
+            <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.getDescription() %></td>
+            <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.getStartDateTime() %></td>
+            <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.getAID()%></td>
             <td class="px-6 py-4 text-sm">
                 <div class="flex space-x-4">
 
 
                         <button class="text-green-600 hover:text-green-800 font-medium"
-                                onclick="window.location.href='updateUser?id=<%= workshop.optInt("createdBy") %>'">Edit</button>
+                                onclick="window.location.href='updateEvent?id=<%= workshop.getEID() %>&type=workshop'">Edit</button>
                         <button class="text-red-600 hover:text-red-800 font-medium"
-                                onclick="window.location.href='deleteWorkshop?id=<%= workshop.optInt("createdBy") %>'">Delete</button>
+                                onclick="window.location.href='deleteWorkshop?id=<%= workshop.getEID()%>'">Delete</button>
 
                 </div>
             </td>
