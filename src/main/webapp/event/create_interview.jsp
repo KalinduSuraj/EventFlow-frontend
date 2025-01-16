@@ -28,7 +28,7 @@
         <div class="flex justify-between h-16">
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
-                <a href="teacher_dashboard.jsp"
+                <a href="../teacher_dashboard.jsp"
                    class="text-gray-600 hover:text-white px-3 py-2
                   <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Workshop
@@ -38,7 +38,7 @@
                   <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview
                 </a>
-                <a href="teacher_announcement.jsp"
+                <a href="../teacher_announcement.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2
                   <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Announcement

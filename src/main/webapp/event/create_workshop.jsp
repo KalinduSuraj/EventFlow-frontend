@@ -33,7 +33,7 @@
                   <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
           Workshop
         </a>
-        <a href="../teacher_interview.jsp"
+        <a href="teacher_interview.jsp"
            class="text-gray-600 hover:text-sky-700 px-3 py-2
                   <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
           Interview

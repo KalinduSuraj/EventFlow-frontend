@@ -26,7 +26,7 @@
                     Workshop
                 </a>
 
-                <a href="teacher_interview.jsp"
+                <a href="event/teacher_interview.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
                           <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview
