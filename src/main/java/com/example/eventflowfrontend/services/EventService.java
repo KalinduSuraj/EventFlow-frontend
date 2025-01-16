@@ -3,6 +3,7 @@ package com.example.eventflowfrontend.services;
 import com.example.eventflowfrontend.DTO.EventDTO;
 import com.example.eventflowfrontend.DTO.EventType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class EventService {
 
-    private static final String BASE_URL = "http://be.eventsflow.online:8081/api/event/interview"; // Replace with your API base URL
+    private static final String BASE_URL = "http://be.eventsflow.online:8081/api/event"; // Replace with your API base URL
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
@@ -26,18 +27,22 @@ public class EventService {
     public List<EventDTO> getAllEvents(EventType type) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/" + type.toString().toLowerCase()))
+                    .uri(new URI(BASE_URL + "/" + type.name()))
                     .GET()
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             // Convert the JSON response to a list of EventDTOs
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule()); // Register the JSR310 module
+
             return Arrays.asList(objectMapper.readValue(response.body(), EventDTO[].class));
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch events", e);
         }
     }
+
 
     // Get a specific event by ID
     public EventDTO getEventById(int eID) {
@@ -49,7 +54,10 @@ public class EventService {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            // Convert the JSON response to an EventDTO
+            // Convert the JSON response to a list of EventDTOs
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule()); // Register the JSR310 module
+
             return objectMapper.readValue(response.body(), EventDTO.class);
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch event by ID", e);
@@ -62,7 +70,7 @@ public class EventService {
             String jsonRequest = objectMapper.writeValueAsString(event);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/" + type.toString().toLowerCase()))
+                    .uri(new URI(BASE_URL + "/" + type.name()))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
                     .header("Content-Type", "application/json")
                     .build();
