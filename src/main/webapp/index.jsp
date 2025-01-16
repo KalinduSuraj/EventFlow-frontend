@@ -60,6 +60,9 @@
         <a href="Login.jsp" class="btn btn-custom">Login</a>
         <a href="teacher_dashboard.jsp" class="btn btn-custom">Teacher Dashboard</a>
         <a href="admin_dashboard.jsp" class="btn btn-custom">Admin Dashboard</a>
+        <a href="displayStudent" class="btn btn-custom">>displayStudent</a><br>
+        <a href="displayLecturer" class="btn btn-custom">>displayLecturer</a><br>
+        <a href="displayAdmin" class="btn btn-custom">>displayAdmin</a>
 <%--        <a href="admin_dashboard.jsp" class="btn btn-custom">Admin Dashboard</a>--%>
     </div>
 </div>
