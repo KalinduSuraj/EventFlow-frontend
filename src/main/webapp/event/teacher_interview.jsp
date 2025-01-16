@@ -19,8 +19,20 @@
         <div class="flex justify-between h-16">
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
-                <a href="teacher_dashboard.jsp" class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4 <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">Workshop</a>
-                <a href="teacher_interview.jsp" class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4 <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">Interview</a>
+                <a href="#"
+                   onclick="window.location.href='display_workshop?type=workshop'"
+                   class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
+                        <%= request.getRequestURI().contains("display_workshop?type=workshop") ? "bg-sky-700 text-white rounded" : "" %>">
+                    Workshop
+                </a>
+
+                <a href="#"
+                   onclick="window.location.href='display_interview?type=interview'"
+                   class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
+                      <%= request.getRequestURI().contains("display_interview?type=interview") ? "bg-sky-700 text-white rounded" : "" %>">
+                    Interview
+                </a>
+
                 <a href="teacher_announcement.jsp" class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4 <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">Announcement</a>
             </div>
 
@@ -38,7 +50,7 @@
     </div>
     <div class="text-left mb-4 py-5">
         <button class="bg-red-600 text-white font-bold py-2 px-4 rounded hover:bg-red-800"
-                onclick="window.location.href='addWorkshop?createdBy=10'">Create Interview
+                onclick="window.location.href='addInterview?createdBy=10'">Create Interview
         </button>
     </div>
     <table class="min-w-full table-auto bg-white border-collapse shadow-lg rounded-lg pb-3">
@@ -64,9 +76,9 @@
             <td class="px-6 py-4 text-sm">
                 <div class="flex space-x-4">
                     <button class="text-green-600 hover:text-green-800 font-medium"
-                            onclick="window.location.href='updateInterview?id=<%= interview.getEID() %>'">Edit</button>
+                            onclick="window.location.href='updateEvent?id=<%= interview.getEID() %>&type=workshop'">Edit</button>
                     <button class="text-red-600 hover:text-red-800 font-medium"
-                            onclick="window.location.href='deleteInterview?id=<%= interview.getAID() %>'">Delete</button>
+                            onclick="window.location.href='deleteEvent?id=<%= interview.getEID() %>'">Delete</button>
                 </div>
             </td>
         </tr>

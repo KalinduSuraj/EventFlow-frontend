@@ -14,6 +14,7 @@
         <url-pattern>/display_interview</url-pattern>
         <url-pattern>/updateEvent</url-pattern>
         <url-pattern>/addWorkshop</url-pattern>
+        <url-pattern>/addInterview</url-pattern>
     </servlet-mapping>
      <servlet>
         <servlet-name>UserController</servlet-name>

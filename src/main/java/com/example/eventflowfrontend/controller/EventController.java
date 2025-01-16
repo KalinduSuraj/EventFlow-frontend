@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet(name = "EventController", urlPatterns = {"/display_workshop","/display_interview", "/updateEvent", "/addWorkshop", "/updateEvent", "/deleteEvent", "/assignAnnouncement", "/unassignAnnouncement"})
+@WebServlet(name = "EventController", urlPatterns = {"/display_workshop","/display_interview", "/updateEvent", "/addWorkshop","/addInterview", "/updateEvent", "/deleteEvent", "/assignAnnouncement", "/unassignAnnouncement"})
 public class EventController extends HttpServlet {
 
     private final EventService eventService = new EventService();
@@ -62,12 +62,21 @@ public class EventController extends HttpServlet {
                     EventDTO event = eventService.getEventById(eID);
                     request.setAttribute("workshop", event);
                     request.getRequestDispatcher("event/update_event.jsp").forward(request, response);
+                } else if (type.equals("interview")) {
+                    EventDTO event = eventService.getEventById(eID);
+                    request.setAttribute("interview", event);
+                    request.getRequestDispatcher("event/update_interview.jsp").forward(request, response);
+
                 }
 
                 break;
             case "/addWorkshop":
                 request.getRequestDispatcher("event/create_workshop.jsp").forward(request, response);
+                break;
 
+            case "/addInterview":
+                request.getRequestDispatcher("event/create_interview.jsp").forward(request, response);
+                break;
 
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -81,13 +90,17 @@ public class EventController extends HttpServlet {
         try {
             switch (action) {
                 case "create":
-                    System.out.println("hello");
                     EventDTO newEvent = createEventFromRequest(request);
                     String type = request.getParameter("type");
                     if (type.equals("workshop")) {
                         eventService.createEvent(newEvent, EventType.workshop);
                         request.setAttribute("message", "Event created successfully.");
                         request.getRequestDispatcher("event/create_workshop.jsp").forward(request, response);
+                    } else if (type.equals("interview")) {
+                        eventService.createEvent(newEvent, EventType.interview);
+                        request.setAttribute("message", "Event created successfully.");
+                        request.getRequestDispatcher("event/create_interview.jsp").forward(request, response);
+
                     }
                     break;
 

@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="javax.servlet.http.*, javax.servlet.*, java.io.*" %>
-<%@ page import="org.json.JSONObject" %>
+<%@ page import="com.example.eventflowfrontend.DTO.EventDTO" %>
 <%
-    Integer eID = Integer.parseInt(request.getParameter("eID"));
+    Integer eID = Integer.parseInt(request.getParameter("id"));
     String message = (String) request.getAttribute("message");
     Integer responseCode = (Integer) request.getAttribute("responseCode");
-    JSONObject event = (JSONObject) request.getAttribute("event");
+    EventDTO event = (EventDTO) request.getAttribute("interview");
 %>
 
 <!DOCTYPE html>
@@ -18,38 +18,9 @@
 </head>
 <body class="bg-white flex items-center justify-center min-h-screen">
 
-<!-- Navbar -->
-<nav class="bg-blue-200 shadow-md fixed top-0 w-full z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex-shrink-0 flex items-center space-x-4">
-                <a href="../teacher_dashboard.jsp"
-                   class="text-gray-600 hover:text-white px-3 py-2
-                  <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
-                    Workshop
-                </a>
-                <a href="teacher_interview.jsp"
-                   class="text-gray-600 hover:text-sky-700 px-3 py-2
-                  <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
-                    Interview
-                </a>
-                <a href="../teacher_announcement.jsp"
-                   class="text-gray-600 hover:text-sky-700 px-3 py-2
-                  <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
-                    Announcement
-                </a>
-            </div>
-
-            <div class="flex items-center">
-                <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2"> EventFlow </a>
-            </div>
-        </div>
-    </div>
-</nav>
-
 <!-- Form Box -->
 <div class="bg-blue-200 shadow-lg rounded-lg p-8 max-w-md w-full mt-16">
-    <h2 class="text-2xl font-bold text-center mb-4 py-3">Update Workshop</h2>
+    <h2 class="text-2xl font-bold text-center mb-4 py-3">Update</h2>
 
     <!-- Response Message -->
     <% if (message != null) { %>
