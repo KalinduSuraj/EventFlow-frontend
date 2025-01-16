@@ -11,6 +11,7 @@
     <servlet-mapping>
         <servlet-name>EventController</servlet-name>
         <url-pattern>/display_workshop</url-pattern>
+        <url-pattern>/display_interview</url-pattern>
         <url-pattern>/updateEvent</url-pattern>
         <url-pattern>/addWorkshop</url-pattern>
     </servlet-mapping>

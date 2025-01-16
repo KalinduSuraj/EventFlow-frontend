@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet(name = "EventController", urlPatterns = {"/display_workshop", "/updateEvent", "/addWorkshop", "/updateEvent", "/deleteEvent", "/assignAnnouncement", "/unassignAnnouncement"})
+@WebServlet(name = "EventController", urlPatterns = {"/display_workshop","/display_interview", "/updateEvent", "/addWorkshop", "/updateEvent", "/deleteEvent", "/assignAnnouncement", "/unassignAnnouncement"})
 public class EventController extends HttpServlet {
 
     private final EventService eventService = new EventService();
@@ -36,6 +36,21 @@ public class EventController extends HttpServlet {
                     e.printStackTrace();
                     request.setAttribute("error", "Failed to load workshops.");
                     request.getRequestDispatcher("event/manage_workshop.jsp").forward(request, response);
+                }
+                break;
+
+            case "/display_interview":
+                try {
+                    String type = request.getParameter("type");
+                    if ("interview".equals(type)) {
+                        List<EventDTO> events = eventService.getAllEvents(EventType.interview);
+                        request.setAttribute("interviews", events);
+                        request.getRequestDispatcher("event/teacher_interview.jsp").forward(request, response);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("error", "Failed to load interviews.");
+                    request.getRequestDispatcher("event/teacher_interview.jsp").forward(request, response);
                 }
                 break;
 
