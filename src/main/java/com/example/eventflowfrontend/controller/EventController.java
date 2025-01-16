@@ -9,11 +9,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet(name = "EventController", urlPatterns = {"/events", "/eventDetails", "/createEvent", "/updateEvent", "/deleteEvent", "/assignAnnouncement", "/unassignAnnouncement"})
+@WebServlet(name = "EventController", urlPatterns = {"/display_workshop", "/updateEvent", "/addWorkshop", "/updateEvent", "/deleteEvent", "/assignAnnouncement", "/unassignAnnouncement"})
 public class EventController extends HttpServlet {
 
     private final EventService eventService = new EventService();
@@ -23,20 +24,35 @@ public class EventController extends HttpServlet {
         String path = request.getServletPath();
 
         switch (path) {
-            case "/events":
-                String type = request.getParameter("type"); // "interview" or "workshop"
-                EventType eventType = EventType.valueOf(type.toUpperCase());
-                List<EventDTO> events = eventService.getAllEvents(eventType);
-                request.setAttribute("events", events);
-                request.getRequestDispatcher("event/display.jsp").forward(request, response);
+            case "/display_workshop":
+                try {
+                    String type = request.getParameter("type");
+                    if ("workshop".equals(type)) {
+                        List<EventDTO> events = eventService.getAllEvents(EventType.workshop);
+                        request.setAttribute("workshops", events);
+                        request.getRequestDispatcher("event/manage_workshop.jsp").forward(request, response);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("error", "Failed to load workshops.");
+                    request.getRequestDispatcher("event/manage_workshop.jsp").forward(request, response);
+                }
                 break;
 
-            case "/eventDetails":
-                int eID = Integer.parseInt(request.getParameter("eID"));
-                EventDTO event = eventService.getEventById(eID);
-                request.setAttribute("event", event);
-                request.getRequestDispatcher("event/details.jsp").forward(request, response);
+
+            case "/updateEvent":
+                int eID = Integer.parseInt(request.getParameter("id"));
+                String type = request.getParameter("type");
+                if (type.equals("workshop")) {
+                    EventDTO event = eventService.getEventById(eID);
+                    request.setAttribute("workshop", event);
+                    request.getRequestDispatcher("event/update_event.jsp").forward(request, response);
+                }
+
                 break;
+            case "/addWorkshop":
+                request.getRequestDispatcher("event/create_workshop.jsp").forward(request, response);
+
 
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -46,19 +62,22 @@ public class EventController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-
+        System.out.println(action);
         try {
             switch (action) {
                 case "create":
+                    System.out.println("hello");
                     EventDTO newEvent = createEventFromRequest(request);
                     String type = request.getParameter("type");
-                    EventType eventType = EventType.valueOf(type.toUpperCase());
-                    eventService.createEvent(newEvent, eventType);
-                    request.setAttribute("message", "Event created successfully.");
+                    if (type.equals("workshop")) {
+                        eventService.createEvent(newEvent, EventType.workshop);
+                        request.setAttribute("message", "Event created successfully.");
+                        request.getRequestDispatcher("event/create_workshop.jsp").forward(request, response);
+                    }
                     break;
 
                 case "update":
-                    int eID = Integer.parseInt(request.getParameter("eID"));
+                    int eID = Integer.parseInt(request.getParameter("id"));
                     EventDTO updatedEvent = createEventFromRequest(request);
                     eventService.updateEvent(eID, updatedEvent);
                     request.setAttribute("message", "Event updated successfully.");
@@ -88,9 +107,11 @@ public class EventController extends HttpServlet {
             }
         } catch (Exception e) {
             request.setAttribute("message", "An error occurred: " + e.getMessage());
+            //request.getRequestDispatcher("event/manage_workshop.jsp").forward(request, response);
+            System.out.println(e.getMessage());
         }
 
-        request.getRequestDispatcher("event/message.jsp").forward(request, response);
+
     }
 
     private EventDTO createEventFromRequest(HttpServletRequest request) {
