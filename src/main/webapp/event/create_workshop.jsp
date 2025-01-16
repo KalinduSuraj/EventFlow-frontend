@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="javax.servlet.http.*, javax.servlet.*, java.io.*" %>
-<%@ page import="org.json.JSONObject" %>
+
 <%
   String message = (String) request.getAttribute("message");
 %>
