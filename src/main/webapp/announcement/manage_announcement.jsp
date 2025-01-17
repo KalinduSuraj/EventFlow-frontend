@@ -19,21 +19,24 @@
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
 
-                <a href="../teacher_dashboard.jsp"
+                <a href="#"
+                   onclick="window.location.href='display_workshop?type=workshop'"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                        <%= request.getRequestURI().contains("display_workshop?type=workshop") ? "bg-sky-700 text-white rounded" : "" %>">
                     Workshop
                 </a>
 
-                <a href="teacher_interview.jsp"
+                <a href="#"
+                   onclick="window.location.href='display_interview?type=interview'"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                      <%= request.getRequestURI().contains("display_interview?type=interview") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview
                 </a>
 
-                <a href="../announcement/teacher_announcement.jsp"
+                <a href="#"
+                   onclick="window.location.href='viewAnnouncement?'"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                      <%= request.getRequestURI().contains("viewAnnouncement?") ? "bg-sky-700 text-white rounded" : "" %>">
                     Announcement
                 </a>
             </div>
@@ -41,6 +44,8 @@
             <!-- Right Nav -->
             <div class="flex items-center">
                 <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2"> EventFlow </a>
+
+
             </div>
         </div>
     </div>
@@ -69,8 +74,11 @@
             </button>
             <!-- Dropdown Content -->
             <div id="dropdownMenu" class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden">
-                <a href="viewAnnouncementsByUser?" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Announcements by User</a>
-                <a href="viewAssignedBatches" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Assigned Batches</a>
+                <a href="viewAnnouncementsByUser?uid=10" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View by User</a>
+                <a href="viewAssignedBatches?aid=1" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Assigned Batches</a>
+                <a href="viewAssignedStudents?aid=1" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Assigned Students</a>
+                <a href="viewAssignedAnnouncementsByStudent?uid=8" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View by Students</a>
+                <a href="viewAssignedAnnouncementsByBatch?bID=1" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View by Batches</a>
             </div>
         </div>
     </div>

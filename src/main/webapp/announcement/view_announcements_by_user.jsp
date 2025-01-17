@@ -18,21 +18,25 @@
         <div class="flex justify-between h-16">
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
-                <a href="../teacher_dashboard.jsp"
+
+                <a href="#"
+                   onclick="window.location.href='display_workshop?type=workshop'"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                        <%= request.getRequestURI().contains("display_workshop?type=workshop") ? "bg-sky-700 text-white rounded" : "" %>">
                     Workshop
                 </a>
 
-                <a href="teacher_interview.jsp"
+                <a href="#"
+                   onclick="window.location.href='display_interview?type=interview'"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                      <%= request.getRequestURI().contains("display_interview?type=interview") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview
                 </a>
 
-                <a href="../announcement/teacher_announcement.jsp"
+                <a href="#"
+                   onclick="window.location.href='viewAnnouncement?'"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                      <%= request.getRequestURI().contains("viewAnnouncement?") ? "bg-sky-700 text-white rounded" : "" %>">
                     Announcement
                 </a>
             </div>
@@ -40,10 +44,13 @@
             <!-- Right Nav -->
             <div class="flex items-center">
                 <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2"> EventFlow </a>
+
+
             </div>
         </div>
     </div>
 </nav>
+
 
 <div class="container mx-auto p-6">
     <div class="mb-6 py-5">
@@ -69,17 +76,10 @@
         <tbody>
         <%
             try {
-                // Fetch announcements from the service (using controller logic)
-                int uid = 10;
                 List<AnnouncementDTO> announcements = (List<AnnouncementDTO>) request.getAttribute("announcements");
 
                 if (announcements != null && !announcements.isEmpty()) {
                     for (AnnouncementDTO announcement : announcements) {
-                        String subject = announcement.getSubject();
-                        String message = announcement.getMessage();
-                        Long createdBy = announcement.getCreatedBy();
-                        List<Integer> batches = announcement.getBatches();
-                        List<Integer> students = announcement.getStudents();
                         String aid = announcement.getAID();
         %>
         <tr class="bg-white hover:bg-gray-50">
@@ -87,10 +87,10 @@
             <td class="px-6 py-4 text-sm text-gray-600"><%= announcement.getMessage() %></td>
             <td class="px-6 py-4 text-sm text-gray-600"><%= announcement.getCreatedBy() %></td>
             <td class="px-6 py-4 text-sm text-gray-600">
-                <%= String.join(", ", batches.stream().map(String::valueOf).toArray(String[]::new)) %>
+                <%= String.join(", ", announcement.getBatches().stream().map(String::valueOf).toArray(String[]::new)) %>
             </td>
             <td class="px-6 py-4 text-sm text-gray-600">
-                <%= String.join(", ", students.stream().map(String::valueOf).toArray(String[]::new)) %>
+                <%= String.join(", ", announcement.getStudents().stream().map(String::valueOf).toArray(String[]::new)) %>
             </td>
             <td class="px-6 py-4 text-sm">
                 <div class="flex space-x-4">
@@ -121,7 +121,6 @@
         %>
         </tbody>
     </table>
-
 </div>
 </body>
 </html>
