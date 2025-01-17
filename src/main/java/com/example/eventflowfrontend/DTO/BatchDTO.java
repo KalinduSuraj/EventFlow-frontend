@@ -7,4 +7,8 @@ public class BatchDTO {
     private Integer bID;
     private String batchName;
     private String commonEmail;
+
+    public Object getBatchId() {
+        return null;
+    }
 }

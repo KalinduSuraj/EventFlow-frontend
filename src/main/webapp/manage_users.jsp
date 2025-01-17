@@ -42,7 +42,7 @@
             <img src="image/admin.jpeg" alt="user image" class="w-40 h-32 mx-auto shadow-md mb-4">
             <h3 class="text-lg font-bold text-gray-800">Admin</h3>
             <p class="text-gray-600">Create,Update and Delete an Admin</p>
-            <a href="admin.jsp">
+            <a href="displayAdmin">
                 <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                     View
                 </button>
@@ -54,7 +54,7 @@
             <img src="image/student.jpeg" alt="batch image" class="w-40 h-32 mx-auto shadow-md mb-4">
             <h3 class="text-lg font-bold text-gray-800">Student</h3>
             <p class="text-gray-600">Create,Update and Delete a Student</p>
-            <a href="student.jsp">
+            <a href="displayStudent">
                 <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                     View
                 </button>
@@ -64,9 +64,9 @@
         <!-- Teacher Card -->
         <div class="ease-in transform hover:scale-110 transition duration-100 bg-blue-200 p-6 rounded-lg shadow-md hover:shadow-lg transition">
             <img src="image/teacher.jpeg" alt="Attendance" class="w-40 h-32 mx-auto shadow-md mb-4">
-            <h3 class="text-lg font-bold text-gray-800">Teacher</h3>
-            <p class="text-gray-600">Create,Update and Delete a Teacher</p>
-            <a href="teacher.jsp">
+            <h3 class="text-lg font-bold text-gray-800">Lecturer</h3>
+            <p class="text-gray-600">Create,Update and Delete a Lecturer</p>
+            <a href="displayLecturer">
                 <button class="ease-in transform hover:scale-115 transition duration-100 bg-sky-700 hover:bg-sky-500 text-white py-2 px-4 rounded m-6 inline">
                     View
                 </button>
