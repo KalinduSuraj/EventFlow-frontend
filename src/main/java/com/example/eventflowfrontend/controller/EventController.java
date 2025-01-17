@@ -14,7 +14,16 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet(name = "EventController", urlPatterns = {"/display_workshop","/display_interview", "/updateEvent", "/addWorkshop","/addInterview", "/updateEvent", "/deleteEvent", "/assignAnnouncement", "/unassignAnnouncement"})
+@WebServlet(name = "EventController", urlPatterns = { "/display_workshop",
+        "/display_interview",
+        "/updateEvent",
+        "/addWorkshop",
+        "/addInterview",
+        "/updateEvent",
+        "/deleteEvent",
+        "/assignAnnouncement",
+        "/unassignAnnouncement"
+})
 public class EventController extends HttpServlet {
 
     private final EventService eventService = new EventService();
