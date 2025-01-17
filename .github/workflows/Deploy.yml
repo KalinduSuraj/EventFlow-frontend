@@ -41,14 +41,12 @@ jobs:
       - name: Build Project
         run: ./mvnw clean package -DskipTests
 
-      # Step 7: Deploy JSP files to Tomcat
-      # Debug SSH Connection
+      # Step 7: Debug SSH Connection
       - name: Debug SSH Connection
         env:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
         run: ssh -i private_key.pem $USER@$HOST echo "SSH connection successful"
-
 
       # Step 8: Delete all existing WAR files in Tomcat webapps directory
       - name: Delete Existing WAR Files
@@ -69,15 +67,17 @@ jobs:
         run: |
           # Copy the WAR file to a temporary directory (where the user has write access)
           scp -o StrictHostKeyChecking=no -i private_key.pem ./target/EventsFlow.war $USER@$HOST:/home/$USER/
-
           # SSH into the EC2 instance and move the WAR file to Tomcat's webapps directory
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST << EOF
             # Move the WAR file to the Tomcat webapps directory
             sudo mv /home/$USER/EventsFlow.war /opt/tomcat/webapps/
-
             # Change the ownership to tomcat user (if necessary)
             sudo chown tomcat:tomcat /opt/tomcat/webapps/EventsFlow.war
-
             # Restart Tomcat to load the new deployment
             sudo systemctl restart tomcat
           EOF
+
+      # Step 10: Delete the saved private key
+      - name: Cleanup Private Key
+        if: always() # Ensure this step runs even if previous steps fail
+        run: rm -f private_key.pem
