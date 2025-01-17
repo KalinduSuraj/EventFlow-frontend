@@ -37,12 +37,14 @@
                       <%= request.getRequestURI().contains("display_interview?type=interview") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview
                 </a>
-
-                <a href="teacher_announcement.jsp"
+                <a href="#"
+                   onclick="window.location.href='viewAnnouncement?'"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                          <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                      <%= request.getRequestURI().contains("viewAnnouncement?") ? "bg-sky-700 text-white rounded" : "" %>">
                     Announcement
                 </a>
+
+
             </div>
 
             <!-- Right Nav -->
