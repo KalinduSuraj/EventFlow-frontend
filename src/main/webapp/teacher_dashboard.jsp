@@ -43,15 +43,13 @@
                       <%= request.getRequestURI().contains("viewAnnouncement?") ? "bg-sky-700 text-white rounded" : "" %>">
                     Announcement
                 </a>
-
-
             </div>
 
             <!-- Right Nav -->
             <div class="flex items-center">
                 <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2"> EventFlow </a>
 
-                
+
             </div>
         </div>
     </div>
