@@ -60,7 +60,7 @@ public class AnnouncementController extends HttpServlet {
 
             case "/viewAssignedBatches":
                 try {
-                    int aID = Integer.parseInt(request.getParameter("aID"));
+                    int aID = Integer.parseInt(request.getParameter("aid"));
                     List<Integer> batches = announcementService.getAssignedBatches(aID);
                     request.setAttribute("batches", batches);
                     request.getRequestDispatcher("announcement/view_assigned_batches.jsp").forward(request, response);
@@ -89,11 +89,11 @@ public class AnnouncementController extends HttpServlet {
                     int uid = Integer.parseInt(request.getParameter("uid"));
                     List<AnnouncementDTO> announcements = announcementService.getAssignedAnnouncementsByStudent(uid);
                     request.setAttribute("assignedAnnouncements", announcements);
-                    request.getRequestDispatcher("announcement/view_assigned_announcements_by_student.jsp").forward(request, response);
+                    request.getRequestDispatcher("announcement/view_announcements_by_student.jsp").forward(request, response);
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("error", "Failed to load assigned announcements by student.");
-                    request.getRequestDispatcher("announcement/view_assigned_announcements_by_student.jsp").forward(request, response);
+                    request.getRequestDispatcher("announcement/view_announcements_by_student.jsp").forward(request, response);
                 }
                 break;
 
@@ -102,11 +102,11 @@ public class AnnouncementController extends HttpServlet {
                     int bID = Integer.parseInt(request.getParameter("bID"));
                     List<AnnouncementDTO> announcements = announcementService.getAssignedAnnouncementsByBatch(bID);
                     request.setAttribute("assignedAnnouncements", announcements);
-                    request.getRequestDispatcher("announcement/view_assigned_announcements_by_batch.jsp").forward(request, response);
+                    request.getRequestDispatcher("announcement/view_announcements_by_batch.jsp").forward(request, response);
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("error", "Failed to load assigned announcements by batch.");
-                    request.getRequestDispatcher("announcement/view_assigned_announcements_by_batch.jsp").forward(request, response);
+                    request.getRequestDispatcher("announcement/view_announcements_by_batch.jsp").forward(request, response);
                 }
                 break;
 
