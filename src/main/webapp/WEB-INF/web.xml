@@ -16,6 +16,21 @@
         <url-pattern>/addWorkshop</url-pattern>
         <url-pattern>/addInterview</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AnnouncementController</servlet-name>
+        <servlet-class>com.example.eventflowfrontend.controller.AnnouncementController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnouncementController</servlet-name>
+        <url-pattern>/addAnnouncement</url-pattern>
+        <url-pattern>/viewAnnouncement</url-pattern>
+        <url-pattern>/viewAnnouncementsByUser</url-pattern>
+        <url-pattern>/viewAssignedBatches</url-pattern>
+        <url-pattern>/viewAssignedStudents</url-pattern>
+        <url-pattern>/viewAssignedAnnouncementsByStudent</url-pattern>
+        <url-pattern>/viewAssignedAnnouncementsByBatch</url-pattern>
+    </servlet-mapping>
+
      <servlet>
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.example.eventflowfrontend.controller.UserController</servlet-class>

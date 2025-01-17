@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="org.json.JSONArray, org.json.JSONObject" %>
 <%@ page import="java.net.HttpURLConnection, java.net.URL, java.io.BufferedReader, java.io.InputStreamReader" %>
 
 <!DOCTYPE html>
@@ -20,13 +19,13 @@
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
 
-                <a href="teacher_dashboard.jsp"
+                <a href="../teacher_dashboard.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
                           <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Workshop
                 </a>
 
-                <a href="event/teacher_interview.jsp"
+                <a href="../event/teacher_interview.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
                           <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview
