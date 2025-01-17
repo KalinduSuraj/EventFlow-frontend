@@ -109,6 +109,9 @@ public class AnnouncementController extends HttpServlet {
                     request.getRequestDispatcher("announcement/view_announcements_by_batch.jsp").forward(request, response);
                 }
                 break;
+            case "/addAnnouncement":
+                request.getRequestDispatcher("event/create_workshop.jsp").forward(request, response);
+                break;
 
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
