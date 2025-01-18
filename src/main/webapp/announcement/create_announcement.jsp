@@ -45,11 +45,15 @@
             <label for="studentIds" class="block font-medium">Student IDs (Comma Separated)</label>
             <input type="text" id="studentIds" name="studentIds" class="w-full border rounded px-4 py-3">
         </div>
+        <input type="hidden" name="createdBy" value="<%= request.getParameter("createdBy") %>"/>
+        <input type="hidden" name="action" value="addAnnouncement"/>
+
+
         <div>
             <button type="submit" class="w-1/2 bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 Add Announcement
             </button>
-            <a href="/displayAnnouncements" class="w-1/2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-center">
+            <a href="/viewAnnouncement" class="w-1/2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-center">
                 Cancel
             </a>
         </div>
