@@ -78,7 +78,16 @@
             <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= workshop.getTitle() %></td>
             <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.getDescription() %></td>
             <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.getStartDateTime() %></td>
-            <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.getAID()%></td>
+            <td class="px-6 py-4 text-sm text-gray-600">
+                <% if (workshop.getAID() == null) { %>
+                <button class="bg-white text-blue-800 font-medium px-3 py-1 rounded hover:bg-blue-100"
+                        onclick="window.location.href='addAnnouncement?eID=<%= workshop.getEID() %>'">
+                    Create Announcement
+                </button>
+                <% } else { %>
+                <span><%= workshop.getAID() %></span>
+                <% } %>
+            </td>
             <td class="px-6 py-4 text-sm">
                 <div class="flex space-x-4">
                         <button class="text-green-600 hover:text-green-800 font-medium"
