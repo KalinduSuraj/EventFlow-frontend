@@ -5,7 +5,7 @@
     Integer eID = Integer.parseInt(request.getParameter("id"));
     String message = (String) request.getAttribute("message");
     Integer responseCode = (Integer) request.getAttribute("responseCode");
-    EventDTO event = (EventDTO) request.getAttribute("workshop");
+    EventDTO event = (EventDTO) request.getAttribute("event");
 %>
 
 <!DOCTYPE html>
@@ -30,8 +30,9 @@
     </div>
     <% } %>
 
-    <form id="updateForm" action="/event/<%= eID %>" method="post" class="space-y-3">
-        <input type="hidden" name="_method" value="PUT">
+    <form id="updateForm" action=updateEvent method="post" class="space-y-3">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="id" value="<%=eID%>">
 
         <div>
             <label for="title" class="block text-sm font-medium text-gray-700 py-2">Workshop Title</label>

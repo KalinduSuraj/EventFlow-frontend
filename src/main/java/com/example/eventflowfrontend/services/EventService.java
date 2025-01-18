@@ -1,3 +1,4 @@
+// Full updated EventService class
 package com.example.eventflowfrontend.services;
 
 import com.example.eventflowfrontend.DTO.EventDTO;
@@ -21,6 +22,7 @@ public class EventService {
     public EventService() {
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper(); // Used to convert Java objects to JSON and vice versa
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     // Fetch all events by type
@@ -37,12 +39,12 @@ public class EventService {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule()); // Register the JSR310 module
 
+            // Convert the JSON response to a list of EventDTOs
             return Arrays.asList(objectMapper.readValue(response.body(), EventDTO[].class));
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch events", e);
         }
     }
-
 
     // Get a specific event by ID
     public EventDTO getEventById(int eID) {
@@ -76,8 +78,8 @@ public class EventService {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to create event");
+            if (response.statusCode() != 200 && response.statusCode() != 201) {
+                throw new RuntimeException("Failed to create event: " + response.body());
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to create event", e);
@@ -100,7 +102,7 @@ public class EventService {
                 throw new RuntimeException("Failed to update event");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to update event", e);
+            throw new RuntimeException("Failed to update event: "+e.getMessage(), e);
         }
     }
 
@@ -114,7 +116,7 @@ public class EventService {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to assign announcement");
+                throw new RuntimeException("Failed to assign announcement: " + response.body());
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to assign announcement", e);
@@ -131,7 +133,7 @@ public class EventService {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to unassign announcement");
+                throw new RuntimeException("Failed to unassign announcement: " + response.body());
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to unassign announcement", e);
@@ -148,11 +150,10 @@ public class EventService {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to delete event");
+                throw new RuntimeException("Failed to delete event: " + response.body());
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to delete event", e);
         }
     }
 }
-

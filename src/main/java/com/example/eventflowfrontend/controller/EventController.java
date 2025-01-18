@@ -1,3 +1,4 @@
+// Full EventController with enhanced functionality
 package com.example.eventflowfrontend.controller;
 
 import com.example.eventflowfrontend.DTO.EventDTO;
@@ -9,12 +10,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet(name = "EventController", urlPatterns = { "/display_workshop",
+@WebServlet(name = "EventController", urlPatterns = {
+        "/display_workshop",
         "/display_interview",
         "/updateEvent",
         "/addWorkshop",
@@ -35,12 +36,9 @@ public class EventController extends HttpServlet {
         switch (path) {
             case "/display_workshop":
                 try {
-                    String type = request.getParameter("type");
-                    if ("workshop".equals(type)) {
-                        List<EventDTO> events = eventService.getAllEvents(EventType.workshop);
-                        request.setAttribute("workshops", events);
-                        request.getRequestDispatcher("event/manage_workshop.jsp").forward(request, response);
-                    }
+                    List<EventDTO> workshops = eventService.getAllEvents(EventType.workshop);
+                    request.setAttribute("workshops", workshops);
+                    request.getRequestDispatcher("event/manage_workshop.jsp").forward(request, response);
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("error", "Failed to load workshops.");
@@ -50,12 +48,9 @@ public class EventController extends HttpServlet {
 
             case "/display_interview":
                 try {
-                    String type = request.getParameter("type");
-                    if ("interview".equals(type)) {
-                        List<EventDTO> events = eventService.getAllEvents(EventType.interview);
-                        request.setAttribute("interviews", events);
-                        request.getRequestDispatcher("event/teacher_interview.jsp").forward(request, response);
-                    }
+                    List<EventDTO> interviews = eventService.getAllEvents(EventType.interview);
+                    request.setAttribute("interviews", interviews);
+                    request.getRequestDispatcher("event/teacher_interview.jsp").forward(request, response);
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("error", "Failed to load interviews.");
@@ -63,22 +58,13 @@ public class EventController extends HttpServlet {
                 }
                 break;
 
-
             case "/updateEvent":
                 int eID = Integer.parseInt(request.getParameter("id"));
-                String type = request.getParameter("type");
-                if (type.equals("workshop")) {
-                    EventDTO event = eventService.getEventById(eID);
-                    request.setAttribute("workshop", event);
-                    request.getRequestDispatcher("event/update_event.jsp").forward(request, response);
-                } else if (type.equals("interview")) {
-                    EventDTO event = eventService.getEventById(eID);
-                    request.setAttribute("interview", event);
-                    request.getRequestDispatcher("event/update_interview.jsp").forward(request, response);
-
-                }
-
+                EventDTO eventDTO = eventService.getEventById(eID);
+                request.setAttribute("event", eventDTO);
+                request.getRequestDispatcher("event/update_event.jsp").forward(request, response);
                 break;
+
             case "/addWorkshop":
                 request.getRequestDispatcher("event/create_workshop.jsp").forward(request, response);
                 break;
@@ -94,31 +80,34 @@ public class EventController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        System.out.println(action);
-        try {
-            switch (action) {
-                case "create":
-                    EventDTO newEvent = createEventFromRequest(request);
-                    String type = request.getParameter("type");
-                    if (type.equals("workshop")) {
-                        eventService.createEvent(newEvent, EventType.workshop);
-                        request.setAttribute("message", "Event created successfully.");
-                        request.getRequestDispatcher("event/create_workshop.jsp").forward(request, response);
-                    } else if (type.equals("interview")) {
-                        eventService.createEvent(newEvent, EventType.interview);
-                        request.setAttribute("message", "Event created successfully.");
-                        request.getRequestDispatcher("event/create_interview.jsp").forward(request, response);
+        String path = request.getServletPath();
+        int eID = 0;
 
-                    }
+        if ("/updateEvent".equals(path)) {
+            eID = Integer.parseInt(request.getParameter("id"));
+        }
+
+        try {
+            switch (path) {
+                case "/addWorkshop":
+                    handleAddWorkshop(request, response);
                     break;
 
-                case "update":
-                    int eID = Integer.parseInt(request.getParameter("id"));
-                    EventDTO updatedEvent = createEventFromRequest(request);
+                case "/addInterview":
+                    handleAddInterview(request, response);
+                    break;
+
+                case "/updateEvent":
+                    EventDTO updatedEvent = new EventDTO();
+                    updatedEvent.setTitle(request.getParameter("title"));
+                    updatedEvent.setDescription(request.getParameter("description"));
+                    updatedEvent.setStartDateTime(LocalDateTime.parse(request.getParameter("scheduled_datetime")));
+                    System.out.println(updatedEvent);
                     eventService.updateEvent(eID, updatedEvent);
                     request.setAttribute("message", "Event updated successfully.");
+                    response.sendRedirect("updateEvent?id=" + eID);
                     break;
+
 
                 case "delete":
                     eID = Integer.parseInt(request.getParameter("eID"));
@@ -140,26 +129,73 @@ public class EventController extends HttpServlet {
                     break;
 
                 default:
-                    request.setAttribute("message", "Invalid action.");
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+
             }
         } catch (Exception e) {
-            request.setAttribute("message", "An error occurred: " + e.getMessage());
-            //request.getRequestDispatcher("event/manage_workshop.jsp").forward(request, response);
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("error", "An error occurred: " + e.getMessage());
+            response.sendRedirect("error.jsp");
         }
 
-
     }
 
-    private EventDTO createEventFromRequest(HttpServletRequest request) {
-        EventDTO event = new EventDTO();
-        event.setTitle(request.getParameter("title"));
-        event.setDescription(request.getParameter("description"));
-        event.setStartDateTime(LocalDateTime.parse(request.getParameter("startDateTime")));
-        event.setEventType(EventType.valueOf(request.getParameter("eventType").toUpperCase()));
-        event.setIsActive(Boolean.parseBoolean(request.getParameter("isActive")));
-        event.setCreatedBy(Integer.parseInt(request.getParameter("createdBy")));
-        return event;
+    private void handleAddWorkshop(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            // Collecting form data
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            String startDateTime = request.getParameter("startDateTime");
+            String createdBy = request.getParameter("createdBy");
+
+            // Parsing and validating data
+            LocalDateTime parsedStartDateTime = LocalDateTime.parse(startDateTime);
+            int parsedCreatedBy = Integer.parseInt(createdBy);
+
+            // Creating the EventDTO
+            EventDTO newWorkshop = new EventDTO();
+            newWorkshop.setTitle(title);
+            newWorkshop.setDescription(description);
+            newWorkshop.setStartDateTime(parsedStartDateTime);
+            newWorkshop.setCreatedBy(parsedCreatedBy);
+
+            // Saving the event using EventService
+            eventService.createEvent(newWorkshop, EventType.workshop);
+
+            // Redirecting to display workshops page
+            response.sendRedirect("display_workshop?type=workshop");
+        } catch (Exception e) {
+            throw new ServletException("Failed to add workshop: " + e.getMessage(), e);
+        }
+    }
+
+    private void handleAddInterview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            // Collecting form data
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            String startDateTime = request.getParameter("startDateTime");
+            String createdBy = request.getParameter("createdBy");
+
+            // Parsing and validating data
+            LocalDateTime parsedStartDateTime = LocalDateTime.parse(startDateTime);
+            int parsedCreatedBy = Integer.parseInt(createdBy);
+
+            // Creating the EventDTO
+            EventDTO newInterview = new EventDTO();
+            newInterview.setTitle(title);
+            newInterview.setDescription(description);
+            newInterview.setStartDateTime(parsedStartDateTime);
+            newInterview.setCreatedBy(parsedCreatedBy);
+
+            // Saving the event using EventService
+            eventService.createEvent(newInterview, EventType.interview);
+
+            // Redirecting to display interviews page
+            response.sendRedirect("display_interview?type=interview");
+        } catch (Exception e) {
+            throw new ServletException("Failed to add interview: " + e.getMessage(), e);
+        }
     }
 }
-
