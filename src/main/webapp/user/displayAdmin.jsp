@@ -63,7 +63,7 @@
                         class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
                     Edit
                 </button>
-                <button onclick="window.location.href='deleteUser?uid=<%=user.getUID()%>'"
+                <button onclick="window.location.href='deleteUser?uid=<%=user.getUID()%>&type=admin'"
                         class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
                     Delete
                 </button>

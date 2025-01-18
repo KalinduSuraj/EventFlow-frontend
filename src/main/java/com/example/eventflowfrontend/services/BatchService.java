@@ -1,8 +1,7 @@
 package com.example.eventflowfrontend.services;
 
-import com.example.eventflowfrontend.DTO.AttendanceDTO;
 import com.example.eventflowfrontend.DTO.BatchDTO;
-import com.example.eventflowfrontend.services.BatchService;
+import com.example.eventflowfrontend.DTO.AttendanceDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URI;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class BatchService {
 
-    private static final String BASE_URL = "http://be.eventsflow.online:8081/api/batches";
+    private static final String BASE_URL = "http://be.eventflow.online:8081/api/batches"; // Adjust the URL as needed
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
@@ -23,7 +22,8 @@ public class BatchService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public List<BatchDTO> findAll() {
+    // Fetch all batches
+    public List<BatchDTO> getAllBatches() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(BASE_URL))
@@ -33,14 +33,15 @@ public class BatchService {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             return Arrays.asList(objectMapper.readValue(response.body(), BatchDTO[].class));
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch all batches", e);
+            throw new RuntimeException("Failed to fetch batches", e);
         }
     }
 
-    public BatchDTO findById(Long id) {
+    // Get batch by ID
+    public BatchDTO getBatchById(int batchId) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/" + id))
+                    .uri(new URI(BASE_URL + "/" + batchId))
                     .GET()
                     .build();
 
@@ -51,9 +52,10 @@ public class BatchService {
         }
     }
 
-    public void create(BatchDTO batchDTO) {
+    // Create a new batch
+    public void createBatch(BatchDTO batch) {
         try {
-            String jsonRequest = objectMapper.writeValueAsString(batchDTO);
+            String jsonRequest = objectMapper.writeValueAsString(batch);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(BASE_URL))
@@ -66,16 +68,17 @@ public class BatchService {
                 throw new RuntimeException("Failed to create batch");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create batch", e);
+            throw new RuntimeException("Batch creation failed", e);
         }
     }
 
-    public void update(Long id, BatchDTO batchDTO) {
+    // Update an existing batch
+    public void updateBatch(BatchDTO batch) {
         try {
-            String jsonRequest = objectMapper.writeValueAsString(batchDTO);
+            String jsonRequest = objectMapper.writeValueAsString(batch);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/" + id))
+                    .uri(new URI(BASE_URL + "/" + batch.getBID()))
                     .PUT(HttpRequest.BodyPublishers.ofString(jsonRequest))
                     .header("Content-Type", "application/json")
                     .build();
@@ -85,14 +88,15 @@ public class BatchService {
                 throw new RuntimeException("Failed to update batch");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to update batch", e);
+            throw new RuntimeException("Batch update failed", e);
         }
     }
 
-    public void delete(Long id) {
+    // Delete a batch
+    public void deleteBatch(int batchId) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/" + id))
+                    .uri(new URI(BASE_URL + "/" + batchId))
                     .DELETE()
                     .build();
 
@@ -101,42 +105,44 @@ public class BatchService {
                 throw new RuntimeException("Failed to delete batch");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to delete batch", e);
+            throw new RuntimeException("Batch deletion failed", e);
         }
     }
 
-    public void assignUser(Long bID, AttendanceDTO attendanceDTO) {
+    // Assign a student to a batch
+    public void assignStudentToBatch(int batchId, AttendanceDTO attendanceDTO) {
         try {
             String jsonRequest = objectMapper.writeValueAsString(attendanceDTO);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/assign/" + bID))
+                    .uri(new URI(BASE_URL + "/assign/" + batchId))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
                     .header("Content-Type", "application/json")
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to assign user to batch");
+                throw new RuntimeException("Failed to assign student to batch");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to assign user to batch", e);
+            throw new RuntimeException("Student assignment failed", e);
         }
     }
 
-    public void unassignUser(Long id) {
+    // Unassign a student from a batch
+    public void unassignStudentFromBatch(int studentId) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/assign/" + id))
+                    .uri(new URI(BASE_URL + "/assign/" + studentId))
                     .DELETE()
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to unassign user from batch");
+                throw new RuntimeException("Failed to unassign student from batch");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to unassign user from batch", e);
+            throw new RuntimeException("Unassign student failed", e);
         }
     }
 }
