@@ -149,7 +149,7 @@ public class EventService {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
+            if (response.statusCode() != 200 ) {
                 throw new RuntimeException("Failed to delete event: " + response.body());
             }
         } catch (Exception e) {

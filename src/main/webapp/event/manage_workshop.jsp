@@ -81,13 +81,15 @@
             <td class="px-6 py-4 text-sm text-gray-600"><%= workshop.getAID()%></td>
             <td class="px-6 py-4 text-sm">
                 <div class="flex space-x-4">
-
-
                         <button class="text-green-600 hover:text-green-800 font-medium"
-                                onclick="window.location.href='updateEvent?id=<%= workshop.getEID() %>&type=workshop'">Edit</button>
-                        <button class="text-red-600 hover:text-red-800 font-medium"
-                                onclick="window.location.href='deleteWorkshop?id=<%= workshop.getEID()%>'">Delete</button>
-
+                                onclick="window.location.href='updateEvent?id=<%= workshop.getEID() %>&type=workshop'">
+                            Edit
+                        </button>
+                    <button class="text-red-600 hover:text-red-800 font-medium"
+                            onclick="if(confirm('Are you sure you want to delete this workshop?'))
+                                    window.location.href='deleteEvent?id=<%= workshop.getEID() %>'">
+                        Delete
+                    </button>
                 </div>
             </td>
         </tr>
