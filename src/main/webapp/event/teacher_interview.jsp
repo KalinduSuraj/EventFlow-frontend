@@ -67,7 +67,7 @@
             try {
                 List<EventDTO> interviews = (List<EventDTO>) request.getAttribute("interviews");
                 if (interviews != null && !interviews.isEmpty()) {
-                        for (EventDTO interview:interviews) {
+                    for (EventDTO interview:interviews) {
         %>
         <tr class="bg-white hover:bg-gray-50">
             <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= interview.getTitle() %></td>
@@ -78,7 +78,10 @@
                     <button class="text-green-600 hover:text-green-800 font-medium"
                             onclick="window.location.href='updateEvent?id=<%= interview.getEID() %>&type=workshop'">Edit</button>
                     <button class="text-red-600 hover:text-red-800 font-medium"
-                            onclick="window.location.href='deleteEvent?id=<%= interview.getEID() %>'">Delete</button>
+                            onclick="if(confirm('Are you sure you want to delete this workshop?'))
+                                    window.location.href='deleteEvent?id=<%= interview.getEID() %>'">
+                        Delete
+                    </button>
                 </div>
             </td>
         </tr>
@@ -90,7 +93,7 @@
             <td colspan="4" class="px-6 py-4 text-center text-gray-600">No interviews available</td>
         </tr>
         <%
-                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         %>
