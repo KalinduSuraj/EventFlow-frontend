@@ -59,6 +59,7 @@
             <th class="px-6 py-4 text-left">Title</th>
             <th class="px-6 py-4 text-left">Description</th>
             <th class="px-6 py-4 text-left">Start Date</th>
+            <th class="px-6 py-4 text-left">Announcement</th>
             <th class="px-6 py-4 text-left">Actions</th>
         </tr>
         </thead>
@@ -73,6 +74,16 @@
             <td class="px-6 py-4 text-sm font-medium text-gray-800"><%= interview.getTitle() %></td>
             <td class="px-6 py-4 text-sm text-gray-600"><%= interview.getDescription() %></td>
             <td class="px-6 py-4 text-sm text-gray-600"><%= interview.getStartDateTime() %></td>
+            <td class="px-6 py-4 text-sm text-gray-600">
+                <% if (interview.getAID() == null) { %>
+                <button class="bg-white text-blue-800 font-medium px-3 py-1 rounded hover:bg-blue-100"
+                        onclick="window.location.href='addAnnouncement?eID=<%= interview.getEID() %>'">
+                    Create Announcement
+                </button>
+                <% } else { %>
+                <span><%= interview.getAID() %></span>
+                <% } %>
+            </td>
             <td class="px-6 py-4 text-sm">
                 <div class="flex space-x-4">
                     <button class="text-green-600 hover:text-green-800 font-medium"
