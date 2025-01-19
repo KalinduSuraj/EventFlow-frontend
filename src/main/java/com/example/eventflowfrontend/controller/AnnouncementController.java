@@ -9,126 +9,100 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name ="AnnouncementController", urlPatterns = {"/displayAnnouncements", "/viewAnnouncement", "/updateAnnouncement", "/deleteAnnouncement", "/addAnnouncement"})
+@WebServlet(name = "AnnouncementController", urlPatterns = {
+        "/viewAnnouncementsByUser",
+        "/addAnnouncement",
+
+})
 public class AnnouncementController extends HttpServlet {
 
     private final AnnouncementService announcementService = new AnnouncementService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getServletPath().equals("/displayAnnouncements")) {
-            List<AnnouncementDTO> announcementDTOS = announcementService.getAnnouncementsByUserId(1); // Replace with the actual user ID
-            request.setAttribute("announcements", announcementDTOS);
-            request.getRequestDispatcher("announcement/display.jsp").forward(request, response);
-        }
+        String path = request.getServletPath();
+        String message = null;
 
-        if (request.getServletPath().equals("/viewAnnouncement")) {
-            int aID = Integer.parseInt(request.getParameter("aID"));
-            AnnouncementDTO announcementDTO = announcementService.getAnnouncementById(aID);
-            request.setAttribute("announcement", announcementDTO);
-            request.getRequestDispatcher("announcement/view.jsp").forward(request, response);
-        }
+        try {
+            switch (path) {
+                case "/viewAnnouncementsByUser":
+                    int userID = Integer.parseInt(request.getParameter("uid"));
+                    List<AnnouncementDTO> announcements = announcementService.getAnnouncementsByUserID(userID);
+                    request.setAttribute("announcements", announcements);
+                    request.getRequestDispatcher("announcement/manage_announcements.jsp").forward(request, response);
+                    break;
 
-        if (request.getServletPath().equals("/updateAnnouncement")) {
-            int aID = Integer.parseInt(request.getParameter("aID"));
-            AnnouncementDTO announcementDTO = announcementService.getAnnouncementById(aID);
-            request.setAttribute("announcement", announcementDTO);
-            request.getRequestDispatcher("announcement/update.jsp").forward(request, response);
-        }
+                case "/addAnnouncement":
+                    request.getRequestDispatcher("announcement/create_announcement.jsp").forward(request, response);
+                    break;
 
-        if (request.getServletPath().equals("/deleteAnnouncement")) {
-            int aID = Integer.parseInt(request.getParameter("aID"));
-            announcementService.deleteAnnouncement(aID);
-            List<AnnouncementDTO> announcementDTOS = announcementService.getAnnouncementsByUserId(1); // Replace with the actual user ID
-            request.setAttribute("announcements", announcementDTOS);
-            request.getRequestDispatcher("announcement/display.jsp").forward(request, response);
-        }
 
-        if (request.getServletPath().equals("/addAnnouncement")) {
-            request.getRequestDispatcher("announcement/add.jsp").forward(request, response);
+
+                default:
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("<script>alert('An error occurred: " + e.getMessage().replace("'", "\\'") + "'); window.location.href='error.jsp';</script>");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+        String path = request.getServletPath();
+        String message = null;
 
-        if (action.equals("update")) {
-            AnnouncementDTO announcementDTO = new AnnouncementDTO();
-            announcementDTO.setAID(Integer.valueOf(request.getParameter("aID")));
-            announcementDTO.setSubject(request.getParameter("subject")); // Corrected to 'subject'
-            announcementDTO.setMessage(request.getParameter("message"));
-            announcementDTO.setCreatedBy(Long.valueOf(request.getParameter("createdBy")));
+        try {
+            switch (path) {
+                case "/addAnnouncement":
+                    handleAddAnnouncement(request, response);
+                    break;
 
-            // Parse batches and students (ArrayLists of Integers)
-            String[] batchIds = request.getParameterValues("batchIds");
-            ArrayList<Integer> batches = new ArrayList<>();
-            for (String batchId : batchIds) {
-                batches.add(Integer.valueOf(batchId));
+
+
+                default:
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
-            announcementDTO.setBatches(batches);
-
-            String[] studentIds = request.getParameterValues("studentIds");
-            ArrayList<Integer> students = new ArrayList<>();
-            for (String studentId : studentIds) {
-                students.add(Integer.valueOf(studentId));
-            }
-            announcementDTO.setStudents(students);
-
-            try {
-                announcementService.updateAnnouncement(announcementDTO);
-                request.setAttribute("message", "Announcement updated successfully.");
-            } catch (Exception e) {
-                request.setAttribute("message", "Failed to update announcement.");
-            }
-            request.getRequestDispatcher("announcement/update.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("<script>alert('An error occurred: " + e.getMessage().replace("'", "\\'") + "'); window.location.href='error.jsp';</script>");
         }
+    }
 
-        if (action.equals("add")) {
-            AnnouncementDTO announcementDTO = new AnnouncementDTO();
-            String subject = request.getParameter("subject");
-            String message = request.getParameter("message");
-            String createdByStr = request.getParameter("createdBy");
-
-            // Validate required fields
-            if (subject == null || subject.trim().isEmpty() ||
-                    message == null || message.trim().isEmpty() ||
-                    createdByStr == null || createdByStr.trim().isEmpty()) {
-                request.setAttribute("message", "All fields are required.");
-                request.getRequestDispatcher("announcement/add.jsp").forward(request, response);
-                return;
+    private void handleAddAnnouncement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            // Validate input parameters
+            if (request.getParameter("subject") == null || request.getParameter("message") == null || request.getParameter("createdBy") == null) {
+                throw new IllegalArgumentException("Invalid input: Missing required fields.");
             }
 
-            // Populate AnnouncementDTO
-            announcementDTO.setSubject(subject);
-            announcementDTO.setMessage(message);
-            announcementDTO.setCreatedBy(Long.valueOf(createdByStr));
+            // Create the announcement DTO
+            AnnouncementDTO announcement = createAnnouncementFromRequest(request);
 
-            // Parse batches and students (ArrayLists of Integers)
-            String[] batchIds = request.getParameterValues("batchIds");
-            ArrayList<Integer> batches = new ArrayList<>();
-            for (String batchId : batchIds) {
-                batches.add(Integer.valueOf(batchId));
-            }
-            announcementDTO.setBatches(batches);
+            // Call the service to create the announcement
+            announcementService.createAnnouncement(announcement);
 
-            String[] studentIds = request.getParameterValues("studentIds");
-            ArrayList<Integer> students = new ArrayList<>();
-            for (String studentId : studentIds) {
-                students.add(Integer.valueOf(studentId));
-            }
-            announcementDTO.setStudents(students);
+            // If successful, redirect with a success message
+            response.getWriter().println("<script>alert('Announcement added successfully.'); window.location.href='viewAnnouncementsByUser?uid=" + announcement.getCreatedBy() + "';</script>");
+        } catch (IllegalArgumentException e) {
+            response.getWriter().println("<script>alert('Input validation error: " + e.getMessage().replace("'", "\\'") + "'); window.location.href='announcement/create_announcement.jsp';</script>");
+        } catch (Exception e) {
+            // Log the stack trace for debugging
+            e.printStackTrace();
 
-            try {
-                announcementService.addAnnouncement(announcementDTO);
-                request.setAttribute("message", "Announcement added successfully.");
-            } catch (Exception e) {
-                request.setAttribute("message", "Failed to add announcement.");
-            }
-            request.getRequestDispatcher("announcement/add.jsp").forward(request, response);
+            // Show a detailed error message
+            response.getWriter().println("<script>alert('Failed to add announcement: " + e.getMessage().replace("'", "\\'") + "'); window.location.href='announcement/create_announcement.jsp';</script>");
         }
+    }
+
+
+    private AnnouncementDTO createAnnouncementFromRequest(HttpServletRequest request) {
+        AnnouncementDTO announcement = new AnnouncementDTO();
+        announcement.setSubject(request.getParameter("subject"));
+        announcement.setMessage(request.getParameter("message"));
+        announcement.setCreatedBy(Long.parseLong(request.getParameter("createdBy")));
+        return announcement;
     }
 }

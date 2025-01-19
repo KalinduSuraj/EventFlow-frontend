@@ -48,11 +48,24 @@ public class UserController extends HttpServlet {
 
         if(request.getServletPath().equals("/deleteUser")){
             int uid = Integer.parseInt(request.getParameter("uid"));
+            String type = request.getParameter("type");
             userService.deleteUser(uid);
             List<UserDTO> userDTOS = userService.getAllUsers("students");
             request.setAttribute("users",userDTOS);
-            request.getRequestDispatcher("user/displayStudent.jsp").forward(request,response);
+            switch (type) {
+                case "admin":
+                    response.sendRedirect("displayAdmin");
+                    break;
+                case "student":
+                    response.sendRedirect("displayStudent");
+                    break;
+                case "lecturer":
+                    response.sendRedirect("displayLecturer");
+                    break;
+            }
         }
+
+
 
         if(request.getServletPath().equals("/addUser")){
             request.getRequestDispatcher("user/addUser.jsp").forward(request,response);
@@ -78,7 +91,7 @@ public class UserController extends HttpServlet {
             }
             UserDTO user = userService.getUserById(userDTO.getUID());
             System.out.println(user);
-            request.getRequestDispatcher("user/updateUser.jsp").forward(request, response);
+            response.sendRedirect("updateUser?uid=" + userDTO.getUID());
         }
 
 

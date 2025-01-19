@@ -53,14 +53,18 @@
         <td class="border border-gray-300 px-4 py-2"><%=batch.getBatchName()%></td>
         <td class="border border-gray-300 px-4 py-2"><%=batch.getCommonEmail()%></td>
         <td class="border border-gray-300 px-4 py-2 text-center">
-            <!-- Update and Delete buttons -->
+            <!-- Update, Delete, and Assign buttons -->
             <a href="updateBatch?batchId=<%=batch.getBatchId()%>"
                class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition duration-200 inline-block mr-2">
                 Update
             </a>
             <a href="deleteBatch?batchId=<%=batch.getBatchId()%>"
-               class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-200 inline-block">
+               class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-200 inline-block mr-2">
                 Delete
+            </a>
+            <a href="assignStudents?batchId=<%=batch.getBatchId()%>"
+               class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition duration-200 inline-block">
+                Assign
             </a>
         </td>
     </tr>

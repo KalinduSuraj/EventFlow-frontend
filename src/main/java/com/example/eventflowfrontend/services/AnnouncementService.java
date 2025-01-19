@@ -2,6 +2,7 @@ package com.example.eventflowfrontend.services;
 
 import com.example.eventflowfrontend.DTO.AnnouncementDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -21,8 +22,8 @@ public class AnnouncementService {
         this.objectMapper = new ObjectMapper(); // Used to convert Java objects to JSON and vice versa
     }
 
-    // Fetch all announcements created by a specific user
-    public List<AnnouncementDTO> getAnnouncementsByUserId(int uid) {
+    // Fetch all announcements created by a specific user (UID)
+    public List<AnnouncementDTO> getAnnouncementsByUserID(int uid) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(BASE_URL + "/created_by/" + uid))
@@ -32,33 +33,35 @@ public class AnnouncementService {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             // Convert the JSON response to a list of AnnouncementDTOs
+            objectMapper.registerModule(new JavaTimeModule()); // Register the JSR310 module
             return Arrays.asList(objectMapper.readValue(response.body(), AnnouncementDTO[].class));
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch announcements by user ID", e);
         }
     }
 
-    // Get a specific announcement by its ID
-    public AnnouncementDTO getAnnouncementById(int aID) {
+    // Fetch a specific announcement by its ID
+    public AnnouncementDTO getAnnouncementById(int aid) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/" + aID))
+                    .uri(new URI(BASE_URL + "/" + aid))
                     .GET()
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             // Convert the JSON response to an AnnouncementDTO
+            objectMapper.registerModule(new JavaTimeModule()); // Register the JSR310 module
             return objectMapper.readValue(response.body(), AnnouncementDTO.class);
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch announcement by ID", e);
         }
     }
 
-    // Add a new announcement via the backend API
-    public void addAnnouncement(AnnouncementDTO announcementDTO) {
+    // Create a new announcement
+    public void createAnnouncement(AnnouncementDTO announcement) {
         try {
-            String jsonRequest = objectMapper.writeValueAsString(announcementDTO);
+            String jsonRequest = objectMapper.writeValueAsString(announcement);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(BASE_URL))
@@ -68,18 +71,52 @@ public class AnnouncementService {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to add announcement");
+                throw new RuntimeException("Failed to create announcement");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to add announcement", e);
+            throw new RuntimeException("Failed to create announcement", e);
         }
     }
 
-    // Get all announcements assigned to a specific batch
-    public List<AnnouncementDTO> getAnnouncementsByBatchId(int batchId) {
+    // Fetch all batches assigned to an announcement
+    public List<Integer> getAssignedBatches(int aid) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/assigned/announcement/batch/" + batchId))
+                    .uri(new URI(BASE_URL + "/assigned/batch/" + aid))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            // Convert the JSON response to a list of batch IDs
+            return Arrays.asList(objectMapper.readValue(response.body(), Integer[].class));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch assigned batches", e);
+        }
+    }
+
+    // Fetch all students assigned to an announcement
+    public List<Integer> getAssignedStudents(int aid) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(BASE_URL + "/assigned/student/" + aid))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            // Convert the JSON response to a list of student IDs
+            return Arrays.asList(objectMapper.readValue(response.body(), Integer[].class));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch assigned students", e);
+        }
+    }
+
+    // Fetch all announcements assigned to a student (UID)
+    public List<AnnouncementDTO> getAssignedAnnouncementsByStudent(int uid) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(BASE_URL + "/assigned/announcement/student/" + uid))
                     .GET()
                     .build();
 
@@ -88,15 +125,15 @@ public class AnnouncementService {
             // Convert the JSON response to a list of AnnouncementDTOs
             return Arrays.asList(objectMapper.readValue(response.body(), AnnouncementDTO[].class));
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch announcements by batch ID", e);
+            throw new RuntimeException("Failed to fetch assigned announcements by student", e);
         }
     }
 
-    // Get all announcements assigned to a specific student
-    public List<AnnouncementDTO> getAnnouncementsByStudentId(int studentId) {
+    // Fetch all announcements assigned to a specific batch (bID)
+    public List<AnnouncementDTO> getAssignedAnnouncementsByBatch(int bID) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/assigned/announcement/student/" + studentId))
+                    .uri(new URI(BASE_URL + "/assigned/announcement/batch/" + bID))
                     .GET()
                     .build();
 
@@ -105,46 +142,8 @@ public class AnnouncementService {
             // Convert the JSON response to a list of AnnouncementDTOs
             return Arrays.asList(objectMapper.readValue(response.body(), AnnouncementDTO[].class));
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch announcements by student ID", e);
+            throw new RuntimeException("Failed to fetch assigned announcements by batch", e);
         }
     }
 
-    // Update an existing announcement via the backend API
-    public void updateAnnouncement(AnnouncementDTO announcementDTO) {
-        try {
-            String jsonRequest = objectMapper.writeValueAsString(announcementDTO);
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/" + announcementDTO.getAID()))
-                    .PUT(HttpRequest.BodyPublishers.ofString(jsonRequest))
-                    .header("Content-Type", "application/json")
-                    .build();
-
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to update announcement");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to update announcement", e);
-        }
-    }
-
-    // Delete an announcement from the backend via the API
-    public void deleteAnnouncement(int aID) {
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(BASE_URL + "/" + aID))
-                    .DELETE()
-                    .build();
-
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to delete announcement");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete announcement", e);
-        }
-    }
 }

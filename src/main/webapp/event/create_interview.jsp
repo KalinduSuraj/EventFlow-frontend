@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="javax.servlet.http.*, javax.servlet.*, java.io.*" %>
-<%@ page import="org.json.JSONObject" %>
 <%
     String message = (String) request.getAttribute("message");
 %>
@@ -28,17 +27,20 @@
         <div class="flex justify-between h-16">
             <!-- Left Nav -->
             <div class="flex-shrink-0 flex items-center space-x-4">
-                <a href="teacher_dashboard.jsp"
-                   class="text-gray-600 hover:text-white px-3 py-2
-                  <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                <a href="#"
+                   onclick="window.location.href='display_workshop?type=workshop'"
+                   class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
+                        <%= request.getRequestURI().contains("display_workshop?type=workshop") ? "bg-sky-700 text-white rounded" : "" %>">
                     Workshop
                 </a>
-                <a href="teacher_interview.jsp"
-                   class="text-gray-600 hover:text-sky-700 px-3 py-2
-                  <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+                <a href="#"
+                   onclick="window.location.href='display_interview?type=interview'"
+                   class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
+                        <%= request.getRequestURI().contains("display_interview?type=interview") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview
                 </a>
-                <a href="teacher_announcement.jsp"
+
+                <a href="../teacher_announcement.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2
                   <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Announcement
@@ -60,7 +62,11 @@
     <!-- Response Message -->
     <div id="responseMessage" class="text-center text-sm mb-4"></div>
 
-    <form id="interviewForm" action="/interview" method="post" class="space-y-3">
+    <form id="interviewForm" action="addInterview" method="post" class="space-y-3">
+        <input type="hidden" name="createdBy" value="<%= request.getParameter("createdBy") %>"/>
+        <input type="hidden" name="action" value="create"/>
+        <input type="hidden" name="type" value="interview"/>
+
         <div>
             <label for="title" class="block text-sm font-medium text-gray-700 py-2">Interview Title</label>
             <input type="text" id="title" name="title" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" placeholder="Interview for Web Developer" required>
@@ -76,8 +82,6 @@
             <input type="datetime-local" id="startDateTime" name="startDateTime" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" required>
         </div>
 
-        <input type="hidden" name="createdBy" value="<%= request.getParameter("createdBy") %>"/>
-
         <!-- Buttons Section -->
         <div class="space-y-10">
             <div class="flex space-x-4">
@@ -85,7 +89,7 @@
                     Save
                 </button>
 
-                <a href="teacher_interview.jsp"
+                <a href="event/display_interview"
                    class="w-1/2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-center">
                     Cancel
                 </a>
@@ -93,41 +97,6 @@
         </div>
     </form>
 </div>
-
-<script>
-    document.getElementById('interviewForm').addEventListener('submit', async (event) => {
-        // Prevent default form submission
-        event.preventDefault();
-
-        const form = document.getElementById('interviewForm');
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const response = await fetch('/interview', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            const responseMessage = document.getElementById('responseMessage');
-            if (response.ok) {
-                responseMessage.textContent = result.message;
-                responseMessage.className = 'text-green-500';
-            } else {
-                responseMessage.textContent = result.message || 'An error occurred.';
-                responseMessage.className = 'text-red-500';
-            }
-        } catch (error) {
-            const responseMessage = document.getElementById('responseMessage');
-            responseMessage.textContent = 'Failed to connect to the server.';
-            responseMessage.className = 'text-red-500';
-        }
-    });
-</script>
-
 
 </body>
 </html>

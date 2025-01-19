@@ -11,9 +11,24 @@
     <servlet-mapping>
         <servlet-name>EventController</servlet-name>
         <url-pattern>/display_workshop</url-pattern>
+        <url-pattern>/display_interview</url-pattern>
         <url-pattern>/updateEvent</url-pattern>
         <url-pattern>/addWorkshop</url-pattern>
+        <url-pattern>/addInterview</url-pattern>
+        <url-pattern>/deleteEvent</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AnnouncementController</servlet-name>
+        <servlet-class>com.example.eventflowfrontend.controller.AnnouncementController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnouncementController</servlet-name>
+        <url-pattern>/addAnnouncement</url-pattern>
+        <url-pattern>/viewAnnouncementsByUser</url-pattern>
+        <url-pattern>/viewAssignedBatches</url-pattern>
+        <url-pattern>/viewAssignedStudents</url-pattern>
+    </servlet-mapping>
+
      <servlet>
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.example.eventflowfrontend.controller.UserController</servlet-class>

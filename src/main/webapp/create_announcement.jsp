@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="javax.servlet.http.*, javax.servlet.*, java.io.*" %>
-<%@ page import="org.json.JSONObject" %>
+
 <%
     String message = (String) request.getAttribute("message");
 %>
@@ -33,7 +33,7 @@
                   <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Workshop
                 </a>
-                <a href="teacher_interview.jsp"
+                <a href="event/teacher_interview.jsp"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2
                   <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
                     Interview

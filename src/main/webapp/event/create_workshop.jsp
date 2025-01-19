@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="javax.servlet.http.*, javax.servlet.*, java.io.*" %>
-<%@ page import="org.json.JSONObject" %>
+
 <%
   String message = (String) request.getAttribute("message");
 %>
@@ -28,19 +28,23 @@
     <div class="flex justify-between h-16">
       <!-- Left Nav -->
       <div class="flex-shrink-0 flex items-center space-x-4">
-        <a href="../teacher_dashboard.jsp"
-           class="text-gray-600 hover:text-white px-3 py-2
-                  <%= request.getRequestURI().contains("teacher_dashboard.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+        <a href="#"
+           onclick="window.location.href='display_workshop?type=workshop'"
+           class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
+                        <%= request.getRequestURI().contains("display_workshop?type=workshop") ? "bg-sky-700 text-white rounded" : "" %>">
           Workshop
         </a>
-        <a href="../teacher_interview.jsp"
-           class="text-gray-600 hover:text-sky-700 px-3 py-2
-                  <%= request.getRequestURI().contains("teacher_interview.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+        <a href="#"
+           onclick="window.location.href='display_interview?type=interview'"
+           class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
+                        <%= request.getRequestURI().contains("display_interview?type=interview") ? "bg-sky-700 text-white rounded" : "" %>">
           Interview
         </a>
-        <a href="../teacher_announcement.jsp"
-           class="text-gray-600 hover:text-sky-700 px-3 py-2
-                  <%= request.getRequestURI().contains("teacher_announcement.jsp") ? "bg-sky-700 text-white rounded" : "" %>">
+
+        <a href="#"
+           onclick="window.location.href='viewAnnouncement?'"
+           class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
+                      <%= request.getRequestURI().contains("viewAnnouncement?") ? "bg-sky-700 text-white rounded" : "" %>">
           Announcement
         </a>
       </div>
@@ -61,6 +65,10 @@
   <div id="responseMessage" class="text-center text-sm mb-4"></div>
 
   <form id="workshopForm" action="addWorkshop" method="post" class="space-y-3">
+    <input type="hidden" name="action" value="create"/>
+    <input type="hidden" name="createdBy" value="<%= request.getParameter("createdBy") %>"/>
+    <input type="hidden" name="type" value="workshop"/>
+
     <div>
       <label for="title" class="block text-sm font-medium text-gray-700 py-2">Workshop Title</label>
       <input type="text" id="title" name="title" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" placeholder="Workshop on Web Development" required>
@@ -76,9 +84,7 @@
       <input type="datetime-local" id="startDateTime" name="startDateTime" class="mt-1 block w-full border-gray-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" required>
     </div>
 
-    <input type="hidden" name="createdBy" value="<%= request.getParameter("createdBy") %>"/>
-    <input type="hidden" name="action" value="create"/>
-    <input type="hidden" name="type" value="workshop"/>
+
 
     <!-- Buttons Section -->
     <div class="space-y-10">

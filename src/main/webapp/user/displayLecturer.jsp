@@ -11,21 +11,28 @@
 </head>
 <body class="bg-gray-100 font-sans">
 
-<!-- Navigation Bar -->
-<nav class="bg-blue-600 shadow-lg">
-    <div class="container mx-auto px-4 py-2 flex justify-between items-center">
-        <a href="#" class="text-white text-lg font-bold">User Management System</a>
-        <div>
-            <a href="#" class="text-white px-4 py-2 rounded hover:bg-blue-700">Home</a>
-            <a href="#" class="text-white px-4 py-2 rounded hover:bg-blue-700">Users</a>
-            <a href="#" class="text-white px-4 py-2 rounded hover:bg-blue-700">Settings</a>
+<!-- Navbar -->
+<nav class="bg-blue-200 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <!-- Left Nav -->
+            <div class="flex-shrink-0 flex items-center space-x-4">
+
+            </div>
+
+            <!-- Right Nav -->
+            <div class="flex items-center">
+                <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2">EventFlow</a>
+
+            </div>
         </div>
     </div>
 </nav>
 
 <!-- Main Content -->
-<div class="container mx-auto mt-8">
-    <h1 class="text-2xl font-bold text-center text-gray-700 mb-4">User Management</h1>
+<div class="max-w-6xl mx-auto text-center py-12">
+    <h1 class="text-4xl mb-8 text-sky-900 font-semibold font-sans">Lecturer Management</h1>
+
     <div class="flex justify-end mb-4">
         <button onclick="window.location.href='addUser?createdBy=7'"
                 class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
@@ -63,7 +70,7 @@
                         class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
                     Edit
                 </button>
-                <button onclick="window.location.href='deleteUser?uid=<%=user.getUID()%>'"
+                <button onclick="window.location.href='deleteUser?uid=<%=user.getUID()%>&type=lecturer'"
                         class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
                     Delete
                 </button>
