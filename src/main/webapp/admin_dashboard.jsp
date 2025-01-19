@@ -24,7 +24,7 @@
             <!-- Right Nav -->
             <div class="flex items-center">
                 <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2">EventFlow</a>
-                <a href="update_profile.jsp" class="flex items-center cursor-pointer">
+                <a href="update_adminProfile.jsp" class="flex items-center cursor-pointer">
                     <img src="image/profile1.jpg" alt="Profile" class="w-10 h-10 rounded-full border-2 border-sky-500 hover:border-sky-500 hover:border-sky-700">
                 </a>
             </div>
