@@ -25,28 +25,30 @@
 <div class="container mx-auto my-10 max-w-lg bg-white p-8 rounded-lg shadow-lg">
   <h1 class="text-2xl font-bold mb-6 text-center text-blue-600">Create New Batch</h1>
 
+  <!-- Display Messages -->
   <% String message = (String) request.getAttribute("message"); %>
   <% if (message != null) { %>
-  <p class="text-green-600 text-center mb-4"><%= message %></p>
+  <p class="<%= message.contains("successfully") ? "text-green-600" : "text-red-600" %> text-center mb-4">
+    <%= message %>
+  </p>
   <% } %>
 
+  <!-- Add Batch Form -->
   <form action="addBatch" method="post" class="space-y-4">
-    <% String createdBy = request.getParameter("createdBy"); %>
-    <input type="hidden" name="action" value="create"/>
-    <input type="hidden" name="createdBy" value="<%=createdBy%>"/>
+    <input type="hidden" name="action" value="add"/>
 
     <!-- Batch Name Field -->
     <label class="block">
       <span class="text-gray-700">Batch Name:</span>
       <input type="text" name="batchName" required
-             class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:ring-2 hover:ring-blue-700"/>
+             class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
     </label>
 
     <!-- Common Email Field -->
     <label class="block">
       <span class="text-gray-700">Common Email:</span>
       <input type="email" name="commonEmail" required
-             class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:ring-2 hover:ring-blue-700"/>
+             class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
     </label>
 
     <!-- Submit Button -->

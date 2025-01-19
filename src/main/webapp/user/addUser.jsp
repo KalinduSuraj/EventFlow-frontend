@@ -10,12 +10,19 @@
 <body class="bg-gray-100 text-gray-900">
 
 <!-- Navbar -->
-<nav class="bg-blue-600 p-4 text-white shadow-lg">
-    <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-lg font-bold">User Management System</h1>
-        <div>
-            <a href="/home" class="px-4 py-2 hover:bg-blue-500 rounded">Home</a>
-            <a href="/logout" class="px-4 py-2 hover:bg-blue-500 rounded">Logout</a>
+<nav class="bg-blue-200 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <!-- Left Nav -->
+            <div class="flex-shrink-0 flex items-center space-x-4">
+
+            </div>
+
+            <!-- Right Nav -->
+            <div class="flex items-center">
+                <a href="#" class="text-sky-800 font-semibold text-lg px-3 py-2">EventFlow</a>
+
+            </div>
         </div>
     </div>
 </nav>
