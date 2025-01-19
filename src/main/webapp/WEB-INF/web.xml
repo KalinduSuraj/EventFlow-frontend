@@ -24,12 +24,9 @@
     <servlet-mapping>
         <servlet-name>AnnouncementController</servlet-name>
         <url-pattern>/addAnnouncement</url-pattern>
-        <url-pattern>/viewAnnouncement</url-pattern>
         <url-pattern>/viewAnnouncementsByUser</url-pattern>
         <url-pattern>/viewAssignedBatches</url-pattern>
         <url-pattern>/viewAssignedStudents</url-pattern>
-        <url-pattern>/viewAssignedAnnouncementsByStudent</url-pattern>
-        <url-pattern>/viewAssignedAnnouncementsByBatch</url-pattern>
     </servlet-mapping>
 
      <servlet>

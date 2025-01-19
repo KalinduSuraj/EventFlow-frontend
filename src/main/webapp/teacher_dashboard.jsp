@@ -38,9 +38,9 @@
                     Interview
                 </a>
                 <a href="#"
-                   onclick="window.location.href='viewAnnouncement?'"
+                   onclick="window.location.href='viewAnnouncementsByUser?uid=10'"
                    class="text-gray-600 hover:text-sky-700 px-3 py-2 px-4
-                      <%= request.getRequestURI().contains("viewAnnouncement?") ? "bg-sky-700 text-white rounded" : "" %>">
+                      <%= request.getRequestURI().contains("viewAnnouncementsByUser?uid=10") ? "bg-sky-700 text-white rounded" : "" %>">
                     Announcement
                 </a>
             </div>

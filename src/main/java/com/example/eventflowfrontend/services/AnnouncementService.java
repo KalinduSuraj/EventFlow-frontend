@@ -145,4 +145,5 @@ public class AnnouncementService {
             throw new RuntimeException("Failed to fetch assigned announcements by batch", e);
         }
     }
+
 }
